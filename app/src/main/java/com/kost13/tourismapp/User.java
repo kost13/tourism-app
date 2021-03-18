@@ -1,15 +1,26 @@
 package com.kost13.tourismapp;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String firstName;
     private String lastName;
     private String bio;
+    private String id;
 
-    User(String firstName, String lastName, String bio){
+    public User() {}
+
+    public User(String firstName, String lastName, String bio){
         this.firstName = firstName;
         this.lastName = lastName;
         this.bio = bio;
     }
+
+    public void setId(String id){
+        this.id = id;
+    }
+
+    public String getId() { return id; }
 
     public String getFirstName() {
         return firstName;
