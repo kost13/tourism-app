@@ -1,19 +1,30 @@
 package com.kost13.tourismapp;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class User implements Serializable {
     private String firstName;
     private String lastName;
     private String bio;
     private String id;
+    private String telephone;
+    private String email;
+    private ArrayList<String> locations;
+    private String webpage;
+    private ArrayList<String> languages;
 
     public User() {}
 
-    public User(String firstName, String lastName, String bio){
+    public User(String firstName, String lastName, String bio, String telephone, String email, ArrayList<String> locations, String webpage, ArrayList<String> languages){
         this.firstName = firstName;
         this.lastName = lastName;
         this.bio = bio;
+        this.telephone = telephone;
+        this.email = email;
+        this.locations = locations;
+        this.webpage = webpage;
+        this.languages = languages;
     }
 
     public void setId(String id){
@@ -48,5 +59,45 @@ public class User implements Serializable {
 
     public String getFullName(){
         return getFirstName() + " " + getLastName();
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public ArrayList<String> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(ArrayList<String> locations) {
+        this.locations = locations;
+    }
+
+    public String getWebpage() {
+        return webpage;
+    }
+
+    public void setWebpage(String webpage) {
+        this.webpage = webpage;
+    }
+
+    public ArrayList<String> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(ArrayList<String> languages) {
+        this.languages = languages;
     }
 }
