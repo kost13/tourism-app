@@ -13,11 +13,14 @@
         tools:layout="@layout/fragment_first">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_FirstFragment_to_SearchGuidesFragment"
+            app:destination="@id/SearchGuidesFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_MapFragment"
+            app:destination="@id/MapFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
+        android:id="@+id/SearchGuidesFragment"
         android:name="com.kost13.tourismapp.SearchGuides"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_search_guides">
@@ -25,5 +28,11 @@
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/MapFragment"
+        android:name="com.kost13.tourismapp.MapsFragment"
+        android:label="MapFragment"
+        tools:layout="@layout/fragment_maps">
     </fragment>
 </navigation>
