@@ -1,14 +1,21 @@
 package com.kost13.tourismapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.solver.state.State;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -56,6 +63,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         TextView webpage = findViewById(R.id.webpageValue);
         webpage.setText(user.getWebpage());
+
+        showProfileImage(user.getProfileImageUrl());
     }
 
     public void onDataReady(String dataId){
@@ -96,7 +105,7 @@ public class ProfileActivity extends AppCompatActivity {
     public void emailClicked(View view) {
         String address = viewModel.getUser().getEmail();
         Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        intent.setData(Uri.parse("mailto:"));
         String[] addresses = {address};
         intent.putExtra(Intent.EXTRA_EMAIL, addresses);
 
@@ -104,6 +113,18 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             Log.d("ProfileActivity", "Can't handle this intent!");
+        }
+    }
+
+    private void showProfileImage(String url){
+        if(url != null && !url.isEmpty()){
+            ImageView imageView = (ImageView) findViewById(R.id.profileImageView);
+            int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+            int size = 4*width/10;
+            Picasso.with(this).load(url)
+                    .resize(size, size)
+                    .centerCrop()
+                    .into(imageView);
         }
     }
 }
