@@ -44,7 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
         editProfile.setVisibility(editEnabled ? View.VISIBLE : View.INVISIBLE);
 
         TextView nameView = findViewById(R.id.nameTextView);
-        nameView.setText(user.getFullName());
+        nameView.setText(user.getName());
 
         TextView bioView = findViewById(R.id.profileBio);
         bioView.setText(user.getBio());

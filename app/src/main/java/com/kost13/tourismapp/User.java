@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class User implements Serializable {
-    private String firstName;
-    private String lastName;
+    private String name;
     private String bio;
     private String id;
     private String telephone;
@@ -17,9 +16,8 @@ public class User implements Serializable {
 
     public User() {}
 
-    public User(String firstName, String lastName, String bio, String telephone, String email, ArrayList<String> locations, String webpage, ArrayList<String> languages, String profileImageUrl){
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public User(String name, String bio, String telephone, String email, ArrayList<String> locations, String webpage, ArrayList<String> languages, String profileImageUrl){
+        this.name = name;
         this.bio = bio;
         this.telephone = telephone;
         this.email = email;
@@ -35,20 +33,12 @@ public class User implements Serializable {
 
     public String getId() { return id; }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getBio() {
@@ -57,10 +47,6 @@ public class User implements Serializable {
 
     public void setBio(String bio) {
         this.bio = bio;
-    }
-
-    public String getFullName(){
-        return getFirstName() + " " + getLastName();
     }
 
     public String getTelephone() {

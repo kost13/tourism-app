@@ -15,6 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +30,7 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
-    ProfilesAdapter profilesAdapter;
+//    ProfilesAdapter profilesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,13 +131,7 @@ public class MainActivity extends AppCompatActivity {
         Auth.verifyAuth(this);
         Auth.attachListener();
 
-        RecyclerView profilesView = (RecyclerView) findViewById(R.id.profilesRecyclerView);
-        profilesAdapter = new ProfilesAdapter();
-//        profilesAdapter.search();
-        profilesView.setAdapter(profilesAdapter);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        profilesView.setLayoutManager(layoutManager);
 
     }
 }

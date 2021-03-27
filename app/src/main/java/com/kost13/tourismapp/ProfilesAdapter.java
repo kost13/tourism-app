@@ -13,27 +13,36 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 
 public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesAdapter.ProfileViewHolder> {
 
-    private ArrayList<User> users;
     ChildEventListener childListener;
+    Query query;
+    private ArrayList<User> users;
 
-    public ProfilesAdapter(){
+    public ProfilesAdapter() {
         users = new ArrayList<User>();
-        search();
+
     }
 
-    public void search(){
-        childListener = new ChildEventListener() {
+    public void search(String name) {
+        clear();
+        childListener = createChildEventListener();
+        query = Database.findUserByName(name);
+        query.addChildEventListener(childListener);
+    }
+
+    private ChildEventListener createChildEventListener() {
+        return new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 User user = snapshot.getValue(User.class);
                 user.setId(snapshot.getKey());
                 users.add(user);
-                notifyItemInserted(users.size()-1);
+                notifyItemInserted(users.size() - 1);
             }
 
             @Override
@@ -56,12 +65,12 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesAdapter.Profil
 
             }
         };
-
-        Database.getUsersDb().addChildEventListener(childListener);
     }
 
-    public void clear(){
-        Database.getUsersDb().removeEventListener(childListener);
+    private void clear() {
+        if (childListener != null && query != null) {
+            query.removeEventListener(childListener);
+        }
         users.clear();
     }
 
@@ -70,7 +79,7 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesAdapter.Profil
     @Override
     public ProfileViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        View itemView  = LayoutInflater.from(context).inflate(R.layout.profile_row, parent, false);
+        View itemView = LayoutInflater.from(context).inflate(R.layout.profile_row, parent, false);
         return new ProfileViewHolder(itemView);
     }
 
@@ -94,8 +103,8 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesAdapter.Profil
             nameTV = (TextView) itemView.findViewById(R.id.nameTextView);
         }
 
-        public void bind(User user){
-            nameTV.setText(user.getFullName());
+        public void bind(User user) {
+            nameTV.setText(user.getName());
         }
     }
 }
