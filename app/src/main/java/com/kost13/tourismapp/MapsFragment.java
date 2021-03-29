@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +16,22 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.ArrayList;
 
 public class MapsFragment extends Fragment {
+
+    private MapsViewModel mapsViewModel;
+    private GoogleMap googleMap;
+
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mapsViewModel = new MapsViewModel();
+    }
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -31,11 +46,45 @@ public class MapsFragment extends Fragment {
          */
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            LatLng sydney = new LatLng(-34, 151);
-            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            LatLng initialLocation = new LatLng(52.207144, 21.030708);
+//            googleMap.addMarker(new MarkerOptions().position(initialLocation));
+            googleMap.getUiSettings().setCompassEnabled(true);
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(initialLocation, 16));
+            setNewMap(googleMap);
         }
     };
+
+    private OnDataReadyCallback dataCallback = dataId -> {
+        if(dataId == MapsViewModel.DATA_ID_ROUTES){
+            tryAddRoutePolygon();
+        }
+    };
+
+    private void setNewMap(GoogleMap googleMap){
+        this.googleMap = googleMap;
+        tryAddRoutePolygon();
+    }
+
+    private void tryAddRoutePolygon(){
+        if(googleMap == null){
+            return;
+        }
+
+        ArrayList<LatLng> routes = mapsViewModel.getRoutes();
+        if(routes == null){
+            return;
+        }
+
+        addRouteToMap(routes, googleMap);
+    }
+
+    private void addRouteToMap(ArrayList<LatLng> route, GoogleMap map){
+        map.addPolyline(new PolylineOptions()
+                .color(getResources().getColor(R.color.teal_200, getActivity().getTheme()))
+                .width(12)
+                .addAll(route));
+    }
 
     @Nullable
     @Override
@@ -53,5 +102,7 @@ public class MapsFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+
+        mapsViewModel.downloadRoutes(dataCallback);
     }
 }

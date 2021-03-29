@@ -14,23 +14,20 @@ public class ProfileViewModel extends ViewModel {
 
     private User user;
 
-    ProfileViewModel(String userId, ProfileActivity caller){
+    public static final String DATA_ID_USERS = "users";
+
+    ProfileViewModel(String userId, OnDataReadyCallback callback){
         Log.d("ProfileViewModel", userId);
-        Database.getUsersDb().child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("firebase", "Error getting data", task.getException());
-                } else {
+        Database.getUsersDb().child(userId).get().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.e("firebase", "Error getting data", task.getException());
+            } else {
+                Log.d("firebase", String.valueOf(task.getResult().getValue()));
 
-                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
-
-                    user = task.getResult().getValue(User.class);
-                    if(user != null){
-                        user.setId(userId);
-                        caller.onDataReady("user");
-                    }
-
+                user = task.getResult().getValue(User.class);
+                if(user != null){
+                    user.setId(userId);
+                    callback.onDataReady(DATA_ID_USERS);
                 }
             }
         });

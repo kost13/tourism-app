@@ -1,26 +1,22 @@
 package com.kost13.tourismapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.solver.state.State;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.squareup.picasso.Picasso;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private ProfileViewModel viewModel;
     boolean editEnabled;
+    private ProfileViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +30,15 @@ public class ProfileActivity extends AppCompatActivity {
 
         Log.d("ProfileActivity uuid", userId);
 
-        viewModel = new ProfileViewModel(userId, this);
+        viewModel = new ProfileViewModel(userId, dataId -> {
+            if (dataId == ProfileViewModel.DATA_ID_USERS) {
+                setupView(viewModel.getUser());
+            }
+        });
 
     }
 
-    private void setupView(User user){
+    private void setupView(User user) {
 
         ImageView editProfile = (ImageView) findViewById(R.id.editProfile);
         editProfile.setVisibility(editEnabled ? View.VISIBLE : View.INVISIBLE);
@@ -67,11 +67,6 @@ public class ProfileActivity extends AppCompatActivity {
         showProfileImage(user.getProfileImageUrl());
     }
 
-    public void onDataReady(String dataId){
-        if(dataId == "user"){
-            setupView(viewModel.getUser());
-        }
-    }
 
     public void phoneClicked(View view) {
         String phone_number = viewModel.getUser().getTelephone();
@@ -88,7 +83,7 @@ public class ProfileActivity extends AppCompatActivity {
     public void webpageClicked(View view) {
         String url = viewModel.getUser().getWebpage();
 
-        if (!url.startsWith("https://") && !url.startsWith("http://")){
+        if (!url.startsWith("https://") && !url.startsWith("http://")) {
             url = "http://" + url;
         }
 
@@ -116,11 +111,11 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void showProfileImage(String url){
-        if(url != null && !url.isEmpty()){
+    private void showProfileImage(String url) {
+        if (url != null && !url.isEmpty()) {
             ImageView imageView = (ImageView) findViewById(R.id.profileImageView);
             int width = Resources.getSystem().getDisplayMetrics().widthPixels;
-            int size = 4*width/10;
+            int size = 4 * width / 10;
             Picasso.with(this).load(url)
                     .resize(size, size)
                     .centerCrop()
