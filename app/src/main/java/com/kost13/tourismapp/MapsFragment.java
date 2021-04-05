@@ -1,14 +1,15 @@
 package com.kost13.tourismapp;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import android.graphics.Point;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ScrollView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,15 +25,7 @@ public class MapsFragment extends Fragment {
 
     private MapsViewModel mapsViewModel;
     private GoogleMap googleMap;
-
-
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mapsViewModel = new MapsViewModel();
-    }
-
+    private boolean routeDetailsVisible;
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         /**
@@ -54,36 +47,46 @@ public class MapsFragment extends Fragment {
             setNewMap(googleMap);
         }
     };
-
     private OnDataReadyCallback dataCallback = dataId -> {
-        if(dataId == MapsViewModel.DATA_ID_ROUTES){
+        if (dataId == MapsViewModel.DATA_ID_ROUTES) {
             tryAddRoutePolygon();
         }
     };
 
-    private void setNewMap(GoogleMap googleMap){
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mapsViewModel = new MapsViewModel();
+        routeDetailsVisible = true;
+    }
+
+    private void setNewMap(GoogleMap googleMap) {
         this.googleMap = googleMap;
         tryAddRoutePolygon();
     }
 
-    private void tryAddRoutePolygon(){
-        if(googleMap == null){
+    private void tryAddRoutePolygon() {
+        if (googleMap == null) {
             return;
         }
 
         ArrayList<LatLng> routes = mapsViewModel.getRoutes();
-        if(routes == null){
+        if (routes == null) {
             return;
         }
 
         addRouteToMap(routes, googleMap);
     }
 
-    private void addRouteToMap(ArrayList<LatLng> route, GoogleMap map){
+    private void addRouteToMap(ArrayList<LatLng> route, GoogleMap map) {
         map.addPolyline(new PolylineOptions()
                 .color(getResources().getColor(R.color.teal_200, getActivity().getTheme()))
                 .width(12)
                 .addAll(route));
+
+        for (LatLng point : route) {
+            map.addMarker(new MarkerOptions().position(point).title("Point hehe"));
+        }
     }
 
     @Nullable
@@ -94,6 +97,23 @@ public class MapsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
+    private void setupRouteDetails(@NonNull View view) {
+        ImageButton button = (ImageButton) view.findViewById(R.id.showRouteDetailsButton);
+        button.setOnClickListener((View.OnClickListener) v -> {
+            ScrollView scrollView = (ScrollView) view.findViewById(R.id.routeDetailsScrollView);
+            if (routeDetailsVisible) {
+                scrollView.setVisibility(View.GONE);
+                button.setImageResource(R.drawable.ic_baseline_arrow_drop_up_24);
+            } else {
+                scrollView.setVisibility(view.getVisibility());
+                button.setImageResource(R.drawable.ic_baseline_arrow_drop_down_24);
+            }
+            routeDetailsVisible = !routeDetailsVisible;
+
+        });
+
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -102,6 +122,9 @@ public class MapsFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+
+
+        setupRouteDetails(view);
 
         mapsViewModel.downloadRoutes(dataCallback);
     }
