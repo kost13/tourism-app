@@ -5,18 +5,27 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
+import java.text.DecimalFormat;
+import java.util.List;
+
 public class ProfileActivity extends AppCompatActivity {
 
     boolean editEnabled;
     private ProfileViewModel viewModel;
+
+    private static final int MAX_DESC_LEN = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +39,79 @@ public class ProfileActivity extends AppCompatActivity {
 
         Log.d("ProfileActivity uuid", userId);
 
-        viewModel = new ProfileViewModel(userId, dataId -> {
+        viewModel = new ProfileViewModel(userId);
+
+        viewModel.getUserData(dataId -> {
             if (dataId == ProfileViewModel.DATA_ID_USERS) {
                 setupView(viewModel.getUser());
             }
         });
 
+        viewModel.getUserRoutesData(dataId -> {
+            if(dataId == ProfileViewModel.DATA_ID_ROUTES){
+                setupRoutes(viewModel.getRoutes());
+            }
+        });
+    }
+
+    private void setupRoutes(List<Route> routes){
+
+        if(routes == null){
+            return;
+        }
+
+        LinearLayout layout = (LinearLayout) findViewById(R.id.routesProfileLayout);
+
+        for(Route route : routes){
+            View itemView = LayoutInflater.from(getBaseContext()).inflate(R.layout.route_row, null, false);
+            setupRouteView(itemView, route);
+            layout.addView(itemView);
+        }
+    }
+
+    private void setupRouteView(View view, Route route){
+        TextView title = view.findViewById(R.id.titleTextView);
+        title.setText(route.getTitle());
+        title.setOnClickListener(view1 -> showRoute(route.getId()));
+
+        TextView length = view.findViewById(R.id.routeLengthTextView);
+        length.setText(new DecimalFormat("#.0#km").format(route.computeLength()));
+
+        TextView pois = view.findViewById(R.id.routePoisTextView);
+        pois.setText(String.valueOf(route.getPoisNumber()) + " POIs");
+
+        TextView description = view.findViewById(R.id.routeDescriptionTextView);
+        description.setText(chopString(route.getDescription(), MAX_DESC_LEN));
+
+        ImageView img = view.findViewById(R.id.routeImageView);
+        if(route.getImage() != null && !route.getImage().isEmpty()){
+            setRouteImage(img, route.getImage());
+        } else {
+            img.setVisibility(View.GONE);
+        }
+    }
+
+    private void setRouteImage(ImageView view, String url) {
+        if (url != null && !url.isEmpty()) {
+            int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+            int size = 4 * width / 10;
+            Picasso.with(this).load(url)
+                    .resize(size, size)
+                    .centerCrop()
+                    .into(view);
+        }
+    }
+
+    private void showRoute(String routeId){
+        Log.d("ProfileActivity", "Open route " + routeId);
+    }
+
+    private String chopString(String str, int max_len){
+        if(str.length() <= max_len){
+            return  str;
+        }
+
+        return str.substring(0, max_len) + "...";
     }
 
     private void setupView(User user) {
