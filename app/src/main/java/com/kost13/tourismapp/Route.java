@@ -2,6 +2,7 @@ package com.kost13.tourismapp;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.common.collect.Lists;
+import com.google.maps.android.SphericalUtil;
 
 import java.util.List;
 
@@ -12,9 +13,10 @@ public class Route {
     private List<Point> points;
     private String id;
 
-    public Route() {}
+    public Route() {
+    }
 
-    public Route(String title, String description, String image, List<Point> points){
+    public Route(String title, String description, String image, List<Point> points) {
         setTitle(title);
         setDescription(description);
         setImage(image);
@@ -53,18 +55,37 @@ public class Route {
         this.points = points;
     }
 
-    public double computeLength(){
-        //TODO compute length
-        return 10.5;
+    public double computeLength() {
+
+        final double METERS_TO_KM = 0.0001;
+
+        if (points.isEmpty()) {
+            return 0.0;
+        }
+
+        double length = 0.0;
+        Point prev_point = points.get(0);
+        for (int i = 1; i < points.size(); i++) {
+            length += SphericalUtil.computeDistanceBetween(prev_point.getLatLng(), points.get(i).getLatLng());
+            prev_point = points.get(i);
+        }
+
+        return length*METERS_TO_KM;
     }
 
-    public int getPoisNumber(){
-        //TODO get pois
-        return 2;
+    public int getPoisNumber() {
+        int poi_count = 0;
+        for (Point point : points) {
+            if (point.getPoi() != null) {
+                poi_count++;
+            }
+        }
+
+        return poi_count;
     }
 
-    public List<LatLng> getPointCoordinates(){
-        return Lists.transform(points, point -> point.getLatLng());
+    public List<LatLng> getPointCoordinates() {
+        return Lists.transform(points, Point::getLatLng);
     }
 
     public String getId() {

@@ -2,31 +2,16 @@ package com.kost13.tourismapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseUser;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.View;
-
-import android.view.Menu;
-import android.view.MenuItem;
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
 
-
     }
 
     @Override
@@ -68,10 +52,13 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        switch(id){
-            case R.id.action_my_profile: return openProfile();
-            case R.id.action_sign_out: return signOut();
-            case R.id.action_settings: return true;
+        switch (id) {
+            case R.id.action_my_profile:
+                return openProfile();
+            case R.id.action_sign_out:
+                return signOut();
+            case R.id.action_settings:
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -84,13 +71,10 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private boolean signOut(){
-        AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Log.d("Logout", "User logged out");
-                Auth.attachListener();
-            }
+    private boolean signOut() {
+        AuthUI.getInstance().signOut(this).addOnCompleteListener(task -> {
+            Log.d("Logout", "User logged out");
+            Auth.attachListener();
         });
         Auth.detachListener();
         return true;
@@ -130,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         Auth.verifyAuth(this);
         Auth.attachListener();
-
 
 
     }

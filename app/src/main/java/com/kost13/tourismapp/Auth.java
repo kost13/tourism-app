@@ -1,6 +1,5 @@
 package com.kost13.tourismapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.auth.AuthUI;
@@ -29,19 +28,16 @@ public class Auth {
                 RC_SIGN_IN);
     }
 
-    public static final int signInCode(){
+    public static final int signInCode() {
         return RC_SIGN_IN;
     }
 
     public static void verifyAuth(AppCompatActivity caller) {
         if (firebaseAuth == null) {
             firebaseAuth = FirebaseAuth.getInstance();
-            firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
-                @Override
-                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                    if (firebaseAuth.getCurrentUser() == null) {
-                        signIn(caller);
-                    }
+            firebaseAuthListener = firebaseAuth -> {
+                if (firebaseAuth.getCurrentUser() == null) {
+                    signIn(caller);
                 }
             };
         }

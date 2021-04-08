@@ -18,7 +18,6 @@ public class FirstFragment extends Fragment {
     ) {
 
 
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_first, container, false);
     }
@@ -26,20 +25,10 @@ public class FirstFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.searchGuidesButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SearchGuidesFragment);
-            }
-        });
+        view.findViewById(R.id.searchGuidesButton).setOnClickListener(view1 -> NavHostFragment.findNavController(FirstFragment.this)
+                .navigate(R.id.action_FirstFragment_to_SearchGuidesFragment));
 
-        view.findViewById(R.id.mapsButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_MapFragment);
-            }
-        });
+        view.findViewById(R.id.mapsButton).setOnClickListener(view12 -> NavHostFragment.findNavController(FirstFragment.this)
+                .navigate(R.id.action_FirstFragment_to_MapFragment));
     }
 }

@@ -1,18 +1,17 @@
 package com.kost13.tourismapp;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,13 +24,10 @@ public class SearchGuides extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    RecyclerView profilesView;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-
-    RecyclerView profilesView;
 
     public SearchGuides() {
         // Required empty public constructor
@@ -64,7 +60,7 @@ public class SearchGuides extends Fragment {
         }
     }
 
-    private void search(String name){
+    private void search(String name) {
         Log.d("Search name", name);
 
         ProfilesAdapter profilesAdapter = new ProfilesAdapter();
@@ -83,12 +79,7 @@ public class SearchGuides extends Fragment {
         Button searchButton = (Button) view.findViewById(R.id.searchGuideButton);
         EditText searchName = (EditText) view.findViewById(R.id.searchGuideName);
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                search(searchName.getText().toString());
-            }
-        });
+        searchButton.setOnClickListener(view1 -> search(searchName.getText().toString()));
     }
 
     @Override

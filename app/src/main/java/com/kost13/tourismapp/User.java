@@ -14,9 +14,10 @@ public class User implements Serializable {
     private ArrayList<String> languages;
     private String profileImageUrl;
 
-    public User() {}
+    public User() {
+    }
 
-    public User(String name, String bio, String telephone, String email, ArrayList<String> locations, String webpage, ArrayList<String> languages, String profileImageUrl){
+    public User(String name, String bio, String telephone, String email, ArrayList<String> locations, String webpage, ArrayList<String> languages, String profileImageUrl) {
         this.name = name;
         this.bio = bio;
         this.telephone = telephone;
@@ -27,11 +28,13 @@ public class User implements Serializable {
         this.setProfileImageUrl(profileImageUrl);
     }
 
-    public void setId(String id){
-        this.id = id;
+    public String getId() {
+        return id;
     }
 
-    public String getId() { return id; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

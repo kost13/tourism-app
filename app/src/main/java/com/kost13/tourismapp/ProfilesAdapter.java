@@ -24,7 +24,7 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesAdapter.Profil
     private ArrayList<User> users;
 
     public ProfilesAdapter() {
-        users = new ArrayList<User>();
+        users = new ArrayList<>();
 
     }
 

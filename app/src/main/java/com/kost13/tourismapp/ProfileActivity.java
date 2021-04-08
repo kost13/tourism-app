@@ -15,17 +15,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.text.DecimalFormat;
 import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    private static final int MAX_DESC_LEN = 100;
     boolean editEnabled;
     private ProfileViewModel viewModel;
-
-    private static final int MAX_DESC_LEN = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,35 +38,29 @@ public class ProfileActivity extends AppCompatActivity {
 
         viewModel = new ProfileViewModel(userId);
 
-        viewModel.getUserData(dataId -> {
-            if (dataId == ProfileViewModel.DATA_ID_USERS) {
-                setupView(viewModel.getUser());
-            }
-        });
+        viewModel.getUserData(this::setupView);
 
-        viewModel.getUserRoutesData(dataId -> {
-            if(dataId == ProfileViewModel.DATA_ID_ROUTES){
-                setupRoutes(viewModel.getRoutes());
-            }
-        });
+        viewModel.getUserRoutesData(this::setupRoutes);
     }
 
-    private void setupRoutes(List<Route> routes){
+    private void setupRoutes() {
 
-        if(routes == null){
+        List<Route> routes = viewModel.getRoutes();
+
+        if (routes == null) {
             return;
         }
 
         LinearLayout layout = (LinearLayout) findViewById(R.id.routesProfileLayout);
 
-        for(Route route : routes){
+        for (Route route : routes) {
             View itemView = LayoutInflater.from(getBaseContext()).inflate(R.layout.route_row, null, false);
             setupRouteView(itemView, route);
             layout.addView(itemView);
         }
     }
 
-    private void setupRouteView(View view, Route route){
+    private void setupRouteView(View view, Route route) {
         TextView title = view.findViewById(R.id.titleTextView);
         title.setText(route.getTitle());
         title.setOnClickListener(view1 -> showRoute(route.getId()));
@@ -81,10 +72,10 @@ public class ProfileActivity extends AppCompatActivity {
         pois.setText(String.valueOf(route.getPoisNumber()) + " POIs");
 
         TextView description = view.findViewById(R.id.routeDescriptionTextView);
-        description.setText(chopString(route.getDescription(), MAX_DESC_LEN));
+        description.setText(chopString(route.getDescription()));
 
         ImageView img = view.findViewById(R.id.routeImageView);
-        if(route.getImage() != null && !route.getImage().isEmpty()){
+        if (route.getImage() != null && !route.getImage().isEmpty()) {
             setRouteImage(img, route.getImage());
         } else {
             img.setVisibility(View.GONE);
@@ -102,19 +93,24 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void showRoute(String routeId){
+    private void showRoute(String routeId) {
         Log.d("ProfileActivity", "Open route " + routeId);
     }
 
-    private String chopString(String str, int max_len){
-        if(str.length() <= max_len){
-            return  str;
+    private String chopString(String str) {
+        if (str.length() <= MAX_DESC_LEN) {
+            return str;
         }
 
-        return str.substring(0, max_len) + "...";
+        return str.substring(0, MAX_DESC_LEN) + "...";
     }
 
-    private void setupView(User user) {
+    private void setupView() {
+
+        User user = viewModel.getUser();
+        if (user == null) {
+            return;
+        }
 
         ImageView editProfile = (ImageView) findViewById(R.id.editProfile);
         editProfile.setVisibility(editEnabled ? View.VISIBLE : View.INVISIBLE);

@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -26,7 +25,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MapsFragment extends Fragment {
@@ -36,27 +34,6 @@ public class MapsFragment extends Fragment {
     private boolean routeDetailsVisible;
     private String routeId;
     private View currentView;
-
-    private OnMapReadyCallback callback = new OnMapReadyCallback() {
-
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-        @Override
-        public void onMapReady(GoogleMap googleMap) {
-//            LatLng initialLocation = new LatLng(52.207144, 21.030708);
-            googleMap.getUiSettings().setCompassEnabled(true);
-            googleMap.getUiSettings().setZoomControlsEnabled(true);
-//            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(initialLocation, 16));
-            setNewMap(googleMap);
-        }
-    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,7 +65,7 @@ public class MapsFragment extends Fragment {
         addRouteToMap(route, googleMap);
     }
 
-    private void tryAddPois(){
+    private void tryAddPois() {
         if (googleMap == null) {
             return;
         }
@@ -103,19 +80,19 @@ public class MapsFragment extends Fragment {
         addPoisToMap(pois, googleMap);
     }
 
-    private void zoomMapToRoute(){
+    private void zoomMapToRoute() {
         LatLngBounds bounds = mapsViewModel.getRouteBounds();
-        if(bounds != null){
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
+        if (bounds != null) {
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 40));
         }
     }
 
-    private void setRouteData(Route route){
+    private void setRouteData(Route route) {
         TextView title = currentView.findViewById(R.id.routeTitle);
         title.setText(route.getTitle());
 
         TextView length = currentView.findViewById(R.id.routeLength);
-        length.setText(new DecimalFormat("#.0#km").format(route.computeLength()));
+        length.setText(String.format("%1$,.2f", route.computeLength()));
 
         TextView pois = currentView.findViewById(R.id.routePois);
         pois.setText(String.valueOf(route.getPoisNumber()) + " POIs");
@@ -134,18 +111,18 @@ public class MapsFragment extends Fragment {
                 .addAll(points));
     }
 
-    private void setPoisData(List<PointOfInterest> pois){
+    private void setPoisData(List<PointOfInterest> pois) {
 
         LinearLayout layout = currentView.findViewById(R.id.routePoisLayout);
 
-        for(PointOfInterest poi : pois){
+        for (PointOfInterest poi : pois) {
             View itemView = LayoutInflater.from(getContext()).inflate(R.layout.route_poi_row, null, false);
             setupPoiView(itemView, poi);
             layout.addView(itemView);
         }
     }
 
-    private void setupPoiView(View view, PointOfInterest poi){
+    private void setupPoiView(View view, PointOfInterest poi) {
         TextView title = view.findViewById(R.id.titleTextView);
         title.setText(poi.getTitle());
         title.setOnClickListener(view1 -> centerMapOn(poi.getLatLng()));
@@ -154,16 +131,16 @@ public class MapsFragment extends Fragment {
         description.setText(poi.getDescription());
 
         ImageView img = view.findViewById(R.id.poiImageView);
-        if(poi.getImage() != null && !poi.getImage().isEmpty()){
+        if (poi.getImage() != null && !poi.getImage().isEmpty()) {
             setPoiImage(img, poi.getImage());
         } else {
             img.setVisibility(View.GONE);
         }
     }
 
-    private void centerMapOn(LatLng position){
-        if(googleMap != null){
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(position));
+    private void centerMapOn(LatLng position) {
+        if (googleMap != null) {
+            googleMap.animateCamera(CameraUpdateFactory.newLatLng(position));
         }
     }
 
@@ -193,7 +170,7 @@ public class MapsFragment extends Fragment {
     }
 
     private void setupRouteDetails() {
-        if(currentView == null){
+        if (currentView == null) {
             return;
         }
         ImageButton button = (ImageButton) currentView.findViewById(R.id.showRouteDetailsButton);
@@ -209,7 +186,6 @@ public class MapsFragment extends Fragment {
             routeDetailsVisible = !routeDetailsVisible;
 
         });
-
     }
 
     @Override
@@ -218,22 +194,17 @@ public class MapsFragment extends Fragment {
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
-            mapFragment.getMapAsync(callback);
+            mapFragment.getMapAsync((map -> {
+                map.getUiSettings().setCompassEnabled(true);
+                map.getUiSettings().setZoomControlsEnabled(true);
+                setNewMap(map);
+            }));
         }
 
         currentView = view;
         setupRouteDetails();
 
-        mapsViewModel.downloadRoute(dataId -> {
-            if (dataId == MapsViewModel.DATA_ID_ROUTES) {
-                tryAddRoutePolygon();
-            }
-        });
-
-        mapsViewModel.downloadPois(dataId -> {
-            if(dataId == MapsViewModel.DATA_ID_ROUTE_POIS){
-                tryAddPois();
-            }
-        });
+        mapsViewModel.downloadRoute(this::tryAddRoutePolygon);
+        mapsViewModel.downloadPois(this::tryAddPois);
     }
 }
