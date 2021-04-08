@@ -16,7 +16,7 @@
         android:paddingTop="5sp">
 
         <TextView
-            android:id="@+id/top_text"
+            android:id="@+id/routeTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lines="2"
@@ -78,7 +78,7 @@
         android:layout_height="32dp">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/routeLength"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -89,14 +89,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/routePois"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="3 POIs"
             android:textSize="18sp"
-            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintStart_toEndOf="@+id/routeLength"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
@@ -118,12 +118,13 @@
             android:layout_marginBottom="8dp">
 
             <LinearLayout
+                android:id="@+id/routePoisLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView12"
+                    android:id="@+id/routeDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"

@@ -11,6 +11,7 @@ public class Database {
 
     private static final String DB_USERS = "users";
     private static final String DB_ROUTES = "routes";
+    private static final String DB_ROUTE_POIS = "route_pois";
 
     private static FirebaseDatabase firebaseDatabase;
     private static FirebaseFirestore firestore;
@@ -36,7 +37,7 @@ public class Database {
 
     public static CollectionReference getRoutesDb() { return openFirestoreReference(DB_ROUTES); }
 
-    public static DocumentReference getRoutesDocsReference() { return getRoutesDb().document("jRP5OOxRLrr51zQxcGen");  }
+    public static CollectionReference getRoutePoisDb() { return openFirestoreReference(DB_ROUTE_POIS); }
 
     public static Query findUserByName(String name) {
         name = name.trim();

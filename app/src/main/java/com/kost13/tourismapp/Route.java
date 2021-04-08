@@ -1,5 +1,8 @@
 package com.kost13.tourismapp;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.common.collect.Lists;
+
 import java.util.List;
 
 public class Route {
@@ -58,7 +61,10 @@ public class Route {
     public int getPoisNumber(){
         //TODO get pois
         return 2;
+    }
 
+    public List<LatLng> getPointCoordinates(){
+        return Lists.transform(points, point -> point.getLatLng());
     }
 
     public String getId() {
