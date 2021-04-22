@@ -4,41 +4,62 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileFragment extends Fragment {
 
     private static final int MAX_DESC_LEN = 100;
     boolean editEnabled;
     private ProfileViewModel viewModel;
+    private View currentView;
+
+    public ProfileFragment() {
+        // Required empty public constructor
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        if (getArguments() != null) {
+            String userId = getArguments().getString("userId");
+            Log.d("profile fragmnet", "userID " + userId);
 
-        Intent intent = getIntent();
-        String userId = intent.getStringExtra("UID");
+            editEnabled = userId.equals(Auth.getCurrentUser());
 
-        editEnabled = userId.equals(Auth.getCurrentUser());
+            Log.d("ProfileActivity uuid", userId);
 
-        Log.d("ProfileActivity uuid", userId);
+            viewModel = new ProfileViewModel(userId);
 
-        viewModel = new ProfileViewModel(userId);
+        }
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_profile, container, false);
+    }
+
+
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        currentView = view;
         viewModel.getUserData(this::setupView);
-
         viewModel.getUserRoutesData(this::setupRoutes);
     }
 
@@ -50,10 +71,10 @@ public class ProfileActivity extends AppCompatActivity {
             return;
         }
 
-        LinearLayout layout = (LinearLayout) findViewById(R.id.routesProfileLayout);
+        LinearLayout layout = (LinearLayout) currentView.findViewById(R.id.routesProfileLayout);
 
         for (Route route : routes) {
-            View itemView = LayoutInflater.from(getBaseContext()).inflate(R.layout.route_row, null, false);
+            View itemView = LayoutInflater.from(getContext()).inflate(R.layout.route_row, null, false);
             setupRouteView(itemView, route);
             layout.addView(itemView);
         }
@@ -85,7 +106,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (url != null && !url.isEmpty()) {
             int width = Resources.getSystem().getDisplayMetrics().widthPixels;
             int size = 4 * width / 10;
-            Picasso.with(this).load(url)
+            Picasso.with(getContext()).load(url)
                     .resize(size, size)
                     .centerCrop()
                     .into(view);
@@ -94,6 +115,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void showRoute(String routeId) {
         Log.d("ProfileActivity", "Open route " + routeId);
+        Bundle route = new Bundle();
+        route.putString("routeId", routeId);
+        NavHostFragment.findNavController(ProfileFragment.this).navigate(R.id.action_ProfileFragment_to_MapFragment, route);
     }
 
     private String chopString(String str) {
@@ -111,28 +135,28 @@ public class ProfileActivity extends AppCompatActivity {
             return;
         }
 
-        ImageView editProfile = (ImageView) findViewById(R.id.editProfile);
+        ImageView editProfile = (ImageView) currentView.findViewById(R.id.editProfile);
         editProfile.setVisibility(editEnabled ? View.VISIBLE : View.INVISIBLE);
 
-        TextView nameView = findViewById(R.id.nameTextView);
+        TextView nameView = currentView.findViewById(R.id.nameTextView);
         nameView.setText(user.getName());
 
-        TextView bioView = findViewById(R.id.profileBio);
+        TextView bioView = currentView.findViewById(R.id.profileBio);
         bioView.setText(user.getBio());
 
-        TextView languages = findViewById(R.id.languagesTextView);
+        TextView languages = currentView.findViewById(R.id.languagesTextView);
         languages.setText(String.join(", ", user.getLanguages()));
 
-        TextView locations = findViewById(R.id.locationsTextView);
+        TextView locations = currentView.findViewById(R.id.locationsTextView);
         locations.setText(String.join(", ", user.getLocations()));
 
-        TextView phone = findViewById(R.id.phoneValue);
+        TextView phone = currentView.findViewById(R.id.phoneValue);
         phone.setText(user.getTelephone());
 
-        TextView email = findViewById(R.id.emailValue);
+        TextView email = currentView.findViewById(R.id.emailValue);
         email.setText(user.getEmail());
 
-        TextView webpage = findViewById(R.id.webpageValue);
+        TextView webpage = currentView.findViewById(R.id.webpageValue);
         webpage.setText(user.getWebpage());
 
         showProfileImage(user.getProfileImageUrl());
@@ -144,7 +168,7 @@ public class ProfileActivity extends AppCompatActivity {
         Uri phone = Uri.parse("tel:" + phone_number);
         Intent intent = new Intent(Intent.ACTION_DIAL, phone);
 
-        if (intent.resolveActivity(getPackageManager()) != null) {
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivity(intent);
         } else {
             Log.d("ProfileActivity", "Can't handle this intent!");
@@ -161,7 +185,7 @@ public class ProfileActivity extends AppCompatActivity {
         Uri webpage = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
 
-        if (intent.resolveActivity(getPackageManager()) != null) {
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivity(intent);
         } else {
             Log.d("ProfileActivity", "Can't handle this intent!");
@@ -175,7 +199,7 @@ public class ProfileActivity extends AppCompatActivity {
         String[] addresses = {address};
         intent.putExtra(Intent.EXTRA_EMAIL, addresses);
 
-        if (intent.resolveActivity(getPackageManager()) != null) {
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivity(intent);
         } else {
             Log.d("ProfileActivity", "Can't handle this intent!");
@@ -184,10 +208,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void showProfileImage(String url) {
         if (url != null && !url.isEmpty()) {
-            ImageView imageView = (ImageView) findViewById(R.id.profileImageView);
+            ImageView imageView = (ImageView) currentView.findViewById(R.id.profileImageView);
             int width = Resources.getSystem().getDisplayMetrics().widthPixels;
             int size = 4 * width / 10;
-            Picasso.with(this).load(url)
+            Picasso.with(getContext()).load(url)
                     .resize(size, size)
                     .centerCrop()
                     .into(imageView);

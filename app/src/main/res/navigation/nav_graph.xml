@@ -21,13 +21,16 @@
     </fragment>
     <fragment
         android:id="@+id/SearchGuidesFragment"
-        android:name="com.kost13.tourismapp.SearchGuides"
+        android:name="com.kost13.tourismapp.SearchGuidesFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_search_guides">
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+        <action
+            android:id="@+id/action_SearchGuidesFragment_to_ProfileFragment"
+            app:destination="@id/ProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/MapFragment"
@@ -35,4 +38,13 @@
         android:label="MapFragment"
         tools:layout="@layout/fragment_maps">
     </fragment>
+    <fragment
+        android:id="@+id/ProfileFragment"
+        android:name="com.kost13.tourismapp.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_ProfileFragment_to_MapFragment"
+            app:destination="@id/MapFragment" />
+    </fragment><action android:id="@+id/action_global_ProfileFragment" app:destination="@id/ProfileFragment"/>
 </navigation>

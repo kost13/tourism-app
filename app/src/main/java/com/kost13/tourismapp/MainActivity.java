@@ -9,6 +9,11 @@ import android.view.MenuItem;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -16,6 +21,7 @@ import com.firebase.ui.auth.IdpResponse;
 public class MainActivity extends AppCompatActivity {
 
 //    ProfilesAdapter profilesAdapter;
+    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +30,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        FragmentManager supportFragmentManager = getSupportFragmentManager();
+        NavHostFragment navHostFragment =
+                (NavHostFragment) supportFragmentManager.findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
 
 //        FloatingActionButton fab = findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -65,9 +76,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean openProfile() {
-        Intent intent = new Intent(this, ProfileActivity.class);
-        intent.putExtra("UID", Auth.getCurrentUser());
-        startActivity(intent);
+
+//        NavDirections action = ProfileFragmentDirections.ac
+
+        Bundle bundle = new Bundle();
+        bundle.putString("userId", Auth.getCurrentUser());
+        navController.navigate(R.id.action_global_ProfileFragment, bundle);
+
+
+//        Intent intent = new Intent(this, ProfileActivity.class);
+//        intent.putExtra("UID", Auth.getCurrentUser());
+//        startActivity(intent);
         return true;
     }
 

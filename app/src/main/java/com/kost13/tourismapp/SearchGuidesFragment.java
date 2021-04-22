@@ -10,15 +10,16 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SearchGuides#newInstance} factory method to
+ * Use the {@link SearchGuidesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchGuides extends Fragment {
+public class SearchGuidesFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,7 +30,7 @@ public class SearchGuides extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public SearchGuides() {
+    public SearchGuidesFragment() {
         // Required empty public constructor
     }
 
@@ -39,11 +40,11 @@ public class SearchGuides extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SearchGuides.
+     * @return A new instance of fragment SearchGuidesFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SearchGuides newInstance(String param1, String param2) {
-        SearchGuides fragment = new SearchGuides();
+    public static SearchGuidesFragment newInstance(String param1, String param2) {
+        SearchGuidesFragment fragment = new SearchGuidesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -65,6 +66,11 @@ public class SearchGuides extends Fragment {
 
         ProfilesAdapter profilesAdapter = new ProfilesAdapter();
         profilesView.setAdapter(profilesAdapter);
+        profilesAdapter.addOnUserClickListener(itemId -> {
+            Bundle userId = new Bundle();
+            userId.putString("userId", itemId);
+            NavHostFragment.findNavController(SearchGuidesFragment.this).navigate(R.id.action_SearchGuidesFragment_to_ProfileFragment, userId);
+        });
         profilesAdapter.search(name);
     }
 

@@ -50,7 +50,7 @@ public class MapsViewModel extends ViewModel {
                         pois.add(poi);
                     }
                 }
-                Log.d("firebase", "POIs size " + String.valueOf(pois.size()));
+                Log.d("firebase", "POIs size " + pois.size());
                 callback.onDataReady();
             } else {
                 Log.d("firebase", "Error getting documents: ", task.getException());

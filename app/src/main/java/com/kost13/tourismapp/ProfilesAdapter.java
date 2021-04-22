@@ -22,6 +22,7 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesAdapter.Profil
     ChildEventListener childListener;
     Query query;
     private ArrayList<User> users;
+    ItemSelectedCallback userClickedCallback;
 
     public ProfilesAdapter() {
         users = new ArrayList<>();
@@ -33,6 +34,10 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesAdapter.Profil
         childListener = createChildEventListener();
         query = Database.findUserByName(name);
         query.addChildEventListener(childListener);
+    }
+
+    public void addOnUserClickListener(ItemSelectedCallback callback){
+        userClickedCallback = callback;
     }
 
     private ChildEventListener createChildEventListener() {
@@ -105,6 +110,7 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesAdapter.Profil
 
         public void bind(User user) {
             nameTV.setText(user.getName());
+            nameTV.setOnClickListener((View) -> { userClickedCallback.onItemSelected(user.getId()); });
         }
     }
 }

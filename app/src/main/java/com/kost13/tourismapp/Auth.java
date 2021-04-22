@@ -28,7 +28,7 @@ public class Auth {
                 RC_SIGN_IN);
     }
 
-    public static final int signInCode() {
+    public static int signInCode() {
         return RC_SIGN_IN;
     }
 

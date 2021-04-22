@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,7 +26,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.squareup.picasso.Picasso;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 public class MapsFragment extends Fragment {
@@ -92,10 +93,10 @@ public class MapsFragment extends Fragment {
         title.setText(route.getTitle());
 
         TextView length = currentView.findViewById(R.id.routeLength);
-        length.setText(String.format("%1$,.2f", route.computeLength()));
+        length.setText(String.format("%1$,.3f km", route.computeLength()));
 
         TextView pois = currentView.findViewById(R.id.routePois);
-        pois.setText(String.valueOf(route.getPoisNumber()) + " POIs");
+        pois.setText(route.getPoisNumber() + " POIs");
 
         TextView description = currentView.findViewById(R.id.routeDescription);
         description.setText(route.getDescription());
@@ -188,6 +189,13 @@ public class MapsFragment extends Fragment {
         });
     }
 
+    private void setupControls(){
+        ImageButton close = currentView.findViewById(R.id.button_close);
+        close.setOnClickListener((View) -> {
+            NavHostFragment.findNavController(MapsFragment.this).popBackStack();
+        });
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -203,6 +211,7 @@ public class MapsFragment extends Fragment {
 
         currentView = view;
         setupRouteDetails();
+        setupControls();
 
         mapsViewModel.downloadRoute(this::tryAddRoutePolygon);
         mapsViewModel.downloadPois(this::tryAddPois);

@@ -49,7 +49,7 @@ public class ProfileViewModel extends ViewModel {
                         routes.add(route);
                     }
                 }
-                Log.d("firebase", "routes size " + String.valueOf(routes.size()));
+                Log.d("firebase", "routes size " + routes.size());
                 callback.onDataReady();
             } else {
                 Log.d("firebase", "Error getting documents: ", task.getException());
