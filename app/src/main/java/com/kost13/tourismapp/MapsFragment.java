@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -191,9 +190,7 @@ public class MapsFragment extends Fragment {
 
     private void setupControls(){
         ImageButton close = currentView.findViewById(R.id.button_close);
-        close.setOnClickListener((View) -> {
-            NavHostFragment.findNavController(MapsFragment.this).popBackStack();
-        });
+        close.setOnClickListener((View) -> NavHostFragment.findNavController(MapsFragment.this).popBackStack());
     }
 
     @Override

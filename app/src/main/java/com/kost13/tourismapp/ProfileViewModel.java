@@ -12,8 +12,8 @@ import java.util.List;
 public class ProfileViewModel extends ViewModel {
 
     private User user;
-    private String userId;
-    private List<Route> routes;
+    private final String userId;
+    private final List<Route> routes;
 
 
     ProfileViewModel(String userId) {

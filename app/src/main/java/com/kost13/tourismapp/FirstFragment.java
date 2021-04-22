@@ -19,7 +19,7 @@ public class FirstFragment extends Fragment {
 
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first, container, false);
+        return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
     @Override

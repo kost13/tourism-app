@@ -11,8 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
+
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.firebase.ui.auth.AuthUI;
@@ -20,7 +19,6 @@ import com.firebase.ui.auth.IdpResponse;
 
 public class MainActivity extends AppCompatActivity {
 
-//    ProfilesAdapter profilesAdapter;
     private NavController navController;
 
     @Override
@@ -62,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+
         switch (id) {
             case R.id.action_my_profile:
                 return openProfile();

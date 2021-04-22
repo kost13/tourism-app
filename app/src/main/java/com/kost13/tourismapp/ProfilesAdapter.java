@@ -21,7 +21,7 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesAdapter.Profil
 
     ChildEventListener childListener;
     Query query;
-    private ArrayList<User> users;
+    private final ArrayList<User> users;
     ItemSelectedCallback userClickedCallback;
 
     public ProfilesAdapter() {
@@ -110,7 +110,7 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesAdapter.Profil
 
         public void bind(User user) {
             nameTV.setText(user.getName());
-            nameTV.setOnClickListener((View) -> { userClickedCallback.onItemSelected(user.getId()); });
+            nameTV.setOnClickListener((View) -> userClickedCallback.onItemSelected(user.getId()));
         }
     }
 }

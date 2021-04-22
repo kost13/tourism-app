@@ -14,7 +14,7 @@ import java.util.List;
 public class MapsViewModel extends ViewModel {
 
     private static final String TAG = "MapsViewModel";
-    private List<PointOfInterest> pois;
+    private final List<PointOfInterest> pois;
     private Route route;
 
     public MapsViewModel() {

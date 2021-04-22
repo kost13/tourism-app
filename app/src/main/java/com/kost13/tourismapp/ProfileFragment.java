@@ -4,11 +4,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.squareup.picasso.Picasso;
 
@@ -152,12 +151,15 @@ public class ProfileFragment extends Fragment {
 
         TextView phone = currentView.findViewById(R.id.phoneValue);
         phone.setText(user.getTelephone());
+        phone.setOnClickListener(this::phoneClicked);
 
         TextView email = currentView.findViewById(R.id.emailValue);
         email.setText(user.getEmail());
+        email.setOnClickListener(this::emailClicked);
 
         TextView webpage = currentView.findViewById(R.id.webpageValue);
         webpage.setText(user.getWebpage());
+        webpage.setOnClickListener(this::webpageClicked);
 
         showProfileImage(user.getProfileImageUrl());
     }

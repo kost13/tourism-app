@@ -10,7 +10,7 @@
         android:id="@+id/FirstFragment"
         android:name="com.kost13.tourismapp.FirstFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/fragment_main">
 
         <action
             android:id="@+id/action_FirstFragment_to_SearchGuidesFragment"
@@ -46,5 +46,6 @@
         <action
             android:id="@+id/action_ProfileFragment_to_MapFragment"
             app:destination="@id/MapFragment" />
-    </fragment><action android:id="@+id/action_global_ProfileFragment" app:destination="@id/ProfileFragment"/>
+    </fragment>
+    <action android:id="@+id/action_global_ProfileFragment" app:destination="@id/ProfileFragment" />
 </navigation>
