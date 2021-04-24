@@ -2,6 +2,7 @@ package com.kost13.tourismapp;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,13 @@ public class MapsFragment extends Fragment {
         mapsViewModel = new MapsViewModel();
         routeDetailsVisible = true;
         // TODO pass to fragment
-        routeId = "jRP5OOxRLrr51zQxcGen";
+
+        if (getArguments() != null) {
+            routeId = getArguments().getString("routeId");
+            Log.d("maps fragmnet", "routeId " + routeId);
+        } else {
+            routeId = "jRP5OOxRLrr51zQxcGen";
+        }
     }
 
     private void setNewMap(GoogleMap googleMap) {

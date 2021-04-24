@@ -43,7 +43,6 @@ public class ProfileFragment extends Fragment {
             Log.d("ProfileActivity uuid", userId);
 
             viewModel = new ProfileViewModel(userId);
-
         }
     }
 

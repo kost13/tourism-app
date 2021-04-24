@@ -18,6 +18,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_MapFragment"
             app:destination="@id/MapFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_CreateRouteFragment"
+            app:destination="@id/CreateRouteFragment" />
     </fragment>
     <fragment
         android:id="@+id/SearchGuidesFragment"
@@ -46,6 +49,27 @@
         <action
             android:id="@+id/action_ProfileFragment_to_MapFragment"
             app:destination="@id/MapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/CreateRouteFragment"
+        android:name="com.kost13.tourismapp.CreateRouteFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_create_route">
+        <action
+            android:id="@+id/action_CreateRouteFragment_to_BuildRouteMapFragment"
+            app:destination="@id/BuildRouteMapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/BuildRouteMapFragment"
+        android:name="com.kost13.tourismapp.BuildRouteMapFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_build_route_map">
+        <action
+            android:id="@+id/action_BuildRouteMapFragment_to_MapFragment"
+            app:destination="@id/MapFragment" />
+        <action
+            android:id="@+id/action_BuildRouteMapFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
     </fragment>
     <action android:id="@+id/action_global_ProfileFragment" app:destination="@id/ProfileFragment" />
 </navigation>
