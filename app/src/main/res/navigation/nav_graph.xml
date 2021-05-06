@@ -53,11 +53,17 @@
     <fragment
         android:id="@+id/CreateRouteFragment"
         android:name="com.kost13.tourismapp.CreateRouteFragment"
-        android:label="ProfileFragment"
+        android:label="CreateRouteFragment"
         tools:layout="@layout/fragment_create_route">
         <action
             android:id="@+id/action_CreateRouteFragment_to_BuildRouteMapFragment"
             app:destination="@id/BuildRouteMapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/CreateRoutePoiFragment"
+        android:name="com.kost13.tourismapp.CreateRoutePoiFragment"
+        android:label="CreateRoutePoiFragment"
+        tools:layout="@layout/fragment_create_route_poi">
     </fragment>
     <fragment
         android:id="@+id/BuildRouteMapFragment"
@@ -70,6 +76,9 @@
         <action
             android:id="@+id/action_BuildRouteMapFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+        <action
+            android:id="@+id/action_BuildRouteMapFragment_to_CreateRoutePoiFragment"
+            app:destination="@id/CreateRoutePoiFragment" />
     </fragment>
     <action android:id="@+id/action_global_ProfileFragment" app:destination="@id/ProfileFragment" />
 </navigation>

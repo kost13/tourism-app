@@ -1,9 +1,13 @@
 package com.kost13.tourismapp;
 
+import android.net.Uri;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.GeoPoint;
 
-public class PointOfInterest {
+import java.io.Serializable;
+
+public class PointOfInterest implements Serializable {
     private String description;
     private int geohash;
     private String image;
@@ -11,6 +15,7 @@ public class PointOfInterest {
     private String route;
     private GeoPoint loc;
     private String id;
+    private Uri imageUri;
 
     public PointOfInterest() {}
 
@@ -72,5 +77,13 @@ public class PointOfInterest {
 
     public LatLng getLatLng() {
         return new LatLng(loc.getLatitude(), loc.getLongitude());
+    }
+
+    public Uri getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(Uri imageUri) {
+        this.imageUri = imageUri;
     }
 }

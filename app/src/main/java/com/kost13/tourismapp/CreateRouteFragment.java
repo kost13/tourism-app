@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,16 +78,18 @@ public class CreateRouteFragment extends Fragment {
 
     }
 
-    private String getTitle(){
+    private RouteBasicData getRouteInfo(){
         RouteDataSetupFragment fragment = (RouteDataSetupFragment) getChildFragmentManager().findFragmentById(R.id.routeDataSetupFragment);
-        return fragment.getTitle();
+        return fragment.getData();
     }
 
     private void onContinueClicked(View view) {
 
         //TODO verify fileds and save route data
         Bundle bundle = new Bundle();
-        bundle.putString("routeTitle", getTitle());
+        bundle.putSerializable("routeData", getRouteInfo());
         NavHostFragment.findNavController(CreateRouteFragment.this).navigate(R.id.action_CreateRouteFragment_to_BuildRouteMapFragment, bundle);
     }
+
+
 }
