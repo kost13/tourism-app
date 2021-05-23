@@ -1,4 +1,4 @@
-package com.kost13.tourismapp;
+package com.kost13.tourismapp.users;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -16,6 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.kost13.tourismapp.Auth;
+import com.kost13.tourismapp.R;
+import com.kost13.tourismapp.maps.Route;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -49,6 +52,10 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        viewModel.getUserData(this::setupView);
+        viewModel.getUserRoutesData(this::setupRoutes);
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
@@ -57,11 +64,15 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         currentView = view;
-        viewModel.getUserData(this::setupView);
-        viewModel.getUserRoutesData(this::setupRoutes);
+        setupView();
+        setupRoutes();
     }
 
     private void setupRoutes() {
+
+        if(currentView == null){
+            return;
+        }
 
         List<Route> routes = viewModel.getRoutes();
 
@@ -127,6 +138,10 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setupView() {
+
+        if(currentView == null){
+            return;
+        }
 
         User user = viewModel.getUser();
         if (user == null) {

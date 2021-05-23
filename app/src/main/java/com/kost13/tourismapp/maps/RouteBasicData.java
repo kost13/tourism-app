@@ -1,4 +1,4 @@
-package com.kost13.tourismapp;
+package com.kost13.tourismapp.maps;
 
 import android.net.Uri;
 

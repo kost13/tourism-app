@@ -1,4 +1,4 @@
-package com.kost13.tourismapp;
+package com.kost13.tourismapp.maps;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.GeoPoint;

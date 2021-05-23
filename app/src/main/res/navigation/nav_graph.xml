@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/SearchGuidesFragment"
-        android:name="com.kost13.tourismapp.SearchGuidesFragment"
+        android:name="com.kost13.tourismapp.maps.SearchGuidesFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_search_guides">
 
@@ -37,13 +37,13 @@
     </fragment>
     <fragment
         android:id="@+id/MapFragment"
-        android:name="com.kost13.tourismapp.MapsFragment"
+        android:name="com.kost13.tourismapp.maps.MapsFragment"
         android:label="MapFragment"
         tools:layout="@layout/fragment_maps">
     </fragment>
     <fragment
         android:id="@+id/ProfileFragment"
-        android:name="com.kost13.tourismapp.ProfileFragment"
+        android:name="com.kost13.tourismapp.users.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile">
         <action
@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/CreateRouteFragment"
-        android:name="com.kost13.tourismapp.CreateRouteFragment"
+        android:name="com.kost13.tourismapp.maps.CreateRouteFragment"
         android:label="CreateRouteFragment"
         tools:layout="@layout/fragment_create_route">
         <action
@@ -61,13 +61,13 @@
     </fragment>
     <fragment
         android:id="@+id/CreateRoutePoiFragment"
-        android:name="com.kost13.tourismapp.CreateRoutePoiFragment"
+        android:name="com.kost13.tourismapp.maps.CreateRoutePoiFragment"
         android:label="CreateRoutePoiFragment"
         tools:layout="@layout/fragment_create_route_poi">
     </fragment>
     <fragment
         android:id="@+id/BuildRouteMapFragment"
-        android:name="com.kost13.tourismapp.BuildRouteMapFragment"
+        android:name="com.kost13.tourismapp.maps.BuildRouteMapFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_build_route_map">
         <action

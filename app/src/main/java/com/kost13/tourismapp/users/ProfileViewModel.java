@@ -1,10 +1,14 @@
-package com.kost13.tourismapp;
+package com.kost13.tourismapp.users;
 
 import android.util.Log;
 
 import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.kost13.tourismapp.Database;
+import com.kost13.tourismapp.OnDataReadyCallback;
+import com.kost13.tourismapp.maps.Route;
+import com.kost13.tourismapp.users.User;
 
 import java.util.ArrayList;
 import java.util.List;

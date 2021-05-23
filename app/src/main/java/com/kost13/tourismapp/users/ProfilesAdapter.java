@@ -1,4 +1,4 @@
-package com.kost13.tourismapp;
+package com.kost13.tourismapp.users;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,6 +14,9 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
+import com.kost13.tourismapp.Database;
+import com.kost13.tourismapp.ItemSelectedCallback;
+import com.kost13.tourismapp.R;
 
 import java.util.ArrayList;
 

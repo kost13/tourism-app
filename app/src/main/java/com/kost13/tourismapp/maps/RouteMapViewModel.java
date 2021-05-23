@@ -1,4 +1,4 @@
-package com.kost13.tourismapp;
+package com.kost13.tourismapp.maps;
 
 import android.net.Uri;
 
@@ -8,6 +8,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.StorageReference;
+import com.kost13.tourismapp.Auth;
+import com.kost13.tourismapp.Database;
+import com.kost13.tourismapp.OnDataReadyCallback;
+import com.kost13.tourismapp.maps.Point;
+import com.kost13.tourismapp.maps.PointOfInterest;
+import com.kost13.tourismapp.maps.Route;
+import com.kost13.tourismapp.maps.RouteBasicData;
 
 import java.util.ArrayList;
 import java.util.HashMap;

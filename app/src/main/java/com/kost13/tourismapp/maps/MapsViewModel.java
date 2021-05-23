@@ -1,4 +1,4 @@
-package com.kost13.tourismapp;
+package com.kost13.tourismapp.maps;
 
 import android.util.Log;
 
@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.kost13.tourismapp.Database;
+import com.kost13.tourismapp.OnDataReadyCallback;
 
 import java.util.ArrayList;
 import java.util.List;

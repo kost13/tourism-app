@@ -1,4 +1,4 @@
-package com.kost13.tourismapp;
+package com.kost13.tourismapp.users;
 
 import java.io.Serializable;
 import java.util.ArrayList;
