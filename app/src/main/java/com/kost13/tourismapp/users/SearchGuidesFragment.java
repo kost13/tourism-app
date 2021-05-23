@@ -1,4 +1,4 @@
-package com.kost13.tourismapp.maps;
+package com.kost13.tourismapp.users;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kost13.tourismapp.R;
-import com.kost13.tourismapp.users.ProfilesAdapter;
 
 
 public class SearchGuidesFragment extends Fragment {

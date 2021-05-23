@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/SearchGuidesFragment"
-        android:name="com.kost13.tourismapp.maps.SearchGuidesFragment"
+        android:name="com.kost13.tourismapp.users.SearchGuidesFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_search_guides">
 
