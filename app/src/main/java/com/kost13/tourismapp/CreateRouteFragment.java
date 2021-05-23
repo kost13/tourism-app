@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
@@ -30,6 +31,7 @@ public class CreateRouteFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
 
     public CreateRouteFragment() {
         // Required empty public constructor
@@ -60,6 +62,7 @@ public class CreateRouteFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -84,11 +87,13 @@ public class CreateRouteFragment extends Fragment {
     }
 
     private void onContinueClicked(View view) {
+        RouteMapViewModel routeMapViewModel = new ViewModelProvider(requireActivity()).get(RouteMapViewModel.class);
+        routeMapViewModel.setBasicData(getRouteInfo());
 
         //TODO verify fileds and save route data
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("routeData", getRouteInfo());
-        NavHostFragment.findNavController(CreateRouteFragment.this).navigate(R.id.action_CreateRouteFragment_to_BuildRouteMapFragment, bundle);
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable("routeData", getRouteInfo());
+        NavHostFragment.findNavController(CreateRouteFragment.this).navigate(R.id.action_CreateRouteFragment_to_BuildRouteMapFragment);
     }
 
 

@@ -16,6 +16,7 @@ public class MapsViewModel extends ViewModel {
     private static final String TAG = "MapsViewModel";
     private final List<PointOfInterest> pois;
     private Route route;
+    private RouteMapViewModel routeMapViewModel;
 
     public MapsViewModel() {
         pois = new ArrayList<>();
@@ -58,11 +59,16 @@ public class MapsViewModel extends ViewModel {
         });
     }
 
+
+
     public Route getRoute() {
         return route;
     }
 
     public List<PointOfInterest> getPois() {
+        if(routeMapViewModel != null){
+            return routeMapViewModel.getPois();
+        }
         return pois;
     }
 
@@ -88,5 +94,25 @@ public class MapsViewModel extends ViewModel {
         return new LatLngBounds(new LatLng(min_lat, min_lng), new LatLng(max_lat, max_lng));
     }
 
+    public RouteMapViewModel getRouteMapViewModel() {
+        return routeMapViewModel;
+    }
+
+    public void setRouteMapViewModel(RouteMapViewModel routeMapViewModel) {
+        this.routeMapViewModel = routeMapViewModel;
+        RouteBasicData mbd = routeMapViewModel.getBasicData();
+        if(mbd != null){
+            route = new Route();
+            route.setTitle(mbd.getTitle());
+            route.setDescription(mbd.getDescription());
+            route.setImageUri(mbd.getImageUri());
+            List<LatLng> latLngPoints =  routeMapViewModel.getPoints();
+            List<Point> points = new ArrayList<>();
+            for(LatLng p : latLngPoints){
+                points.add(new Point(p));
+            }
+            route.setPoints(points);
+        }
+    }
 }
 

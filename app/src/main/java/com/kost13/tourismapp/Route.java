@@ -1,5 +1,7 @@
 package com.kost13.tourismapp;
 
+import android.net.Uri;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.common.collect.Lists;
 import com.google.maps.android.SphericalUtil;
@@ -12,6 +14,7 @@ public class Route {
     private String image;
     private List<Point> points;
     private String id;
+    private Uri imageUri;
 
     public Route() {
     }
@@ -94,5 +97,13 @@ public class Route {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Uri getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(Uri imageUri) {
+        this.imageUri = imageUri;
     }
 }

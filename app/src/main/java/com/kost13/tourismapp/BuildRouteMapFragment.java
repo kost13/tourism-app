@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -27,6 +28,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -39,20 +41,15 @@ import io.grpc.okhttp.internal.Util;
 
 public class BuildRouteMapFragment extends Fragment {
 
-    private RouteBasicData routeBasicData;
     private GoogleMap map;
     private Polyline polyline;
-    private List<LatLng> points;
-    private List<PointOfInterest> pois;
     private View view;
 
     private TextView textViewLength;
     private TextView textViewPOIs;
 
-    public BuildRouteMapFragment(){
-        points = new ArrayList<>();
-        pois = new ArrayList<>();
-    }
+    RouteMapViewModel routeMapViewModel;
+
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -68,26 +65,35 @@ public class BuildRouteMapFragment extends Fragment {
         @Override
         public void onMapReady(GoogleMap googleMap) {
 
-            Context context = getContext();
+//            Context context = getContext();
+//
+//            if (context != null && (ActivityCompat.checkSelfPermission(context,
+//                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) && (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+//
+//                // TODO: Consider calling
+//                //    ActivityCompat#requestPermissions
+//                // here to request the missing permissions, and then overriding
+//                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                //                                          int[] grantResults)
+//                // to handle the case where the user grants the permission. See the documentation
+//                // for ActivityCompat#requestPermissions for more details.
+////                return;
+//                LatLng warsaw = new LatLng(52.2297700, 21.0117800);
+//                googleMap.moveCamera(CameraUpdateFactory.newLatLng(warsaw));
+//            } else {
+//                googleMap.setMyLocationEnabled(true);
+//            }
 
-            if (context != null && (ActivityCompat.checkSelfPermission(context,
-                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) && (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-//                return;
-                LatLng warsaw = new LatLng(52.232222, 21.008333);
+            if(routeMapViewModel.getPoints().isEmpty()) {
+                LatLng warsaw = new LatLng(52.22987, 21.01199);
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(warsaw));
+                googleMap.moveCamera(CameraUpdateFactory.zoomTo(12.0f));
             } else {
-                googleMap.setMyLocationEnabled(true);
+                LatLngBounds bounds = routeMapViewModel.getRouteBounds();
+                if (bounds != null) {
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 80));
+                }
             }
-
-            googleMap.moveCamera(CameraUpdateFactory.zoomTo(12.0f));
 
             map = googleMap;
 
@@ -118,8 +124,8 @@ public class BuildRouteMapFragment extends Fragment {
     }
 
     private void addNormalPoint(LatLng latLng){
-        points.add(latLng);
-        polyline.setPoints(points);
+        routeMapViewModel.getPoints().add(latLng);
+        polyline.setPoints(routeMapViewModel.getPoints());
         updateRouteLength();
     }
 
@@ -128,7 +134,7 @@ public class BuildRouteMapFragment extends Fragment {
 
         PointOfInterest poi = createNewPOI(latLng);
 
-        pois.add(poi);
+        routeMapViewModel.getPois().add(poi);
 
         updatePointsOfInterestCount();
 
@@ -147,19 +153,20 @@ public class BuildRouteMapFragment extends Fragment {
     }
 
     private void updateRouteLength(){
-        textViewLength.setText(String.format("%1$,.3f km", Utils.routeLength(points)));
+        textViewLength.setText(String.format("%1$,.3f km", Utils.routeLength(routeMapViewModel.getPoints())));
     }
 
     private void updatePointsOfInterestCount(){
-        textViewPOIs.setText(pois.size() + " POIs");
+        textViewPOIs.setText(routeMapViewModel.getPois().size() + " POIs");
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            routeBasicData = (RouteBasicData) getArguments().getSerializable("routeData");
-        }
+//        if (getArguments() != null) {
+//            routeBasicData = (RouteBasicData) getArguments().getSerializable("routeData");
+//        }
+        routeMapViewModel = new ViewModelProvider(requireActivity()).get(RouteMapViewModel.class);
     }
 
     @Nullable
@@ -182,7 +189,7 @@ public class BuildRouteMapFragment extends Fragment {
         this.view = view;
 
         TextView title = view.findViewById(R.id.textViewTitle);
-        title.setText(routeBasicData.getTitle());
+        title.setText(routeMapViewModel.getBasicData().getTitle());
 
         Button preview = view.findViewById(R.id.buttonPreview);
         preview.setOnClickListener(this::onPreviewClicked);
@@ -197,23 +204,42 @@ public class BuildRouteMapFragment extends Fragment {
     }
 
     private void onPreviewClicked(View view) {
-        NavHostFragment.findNavController(BuildRouteMapFragment.this).navigate(R.id.action_BuildRouteMapFragment_to_MapFragment);
+        Bundle bundle = new Bundle();
+        bundle.putString("preview", "true");
+        NavHostFragment.findNavController(BuildRouteMapFragment.this).navigate(R.id.action_BuildRouteMapFragment_to_MapFragment, bundle);
     }
 
     private void onDone(View view) {
-
-        //TODO save data
-
-        ((AppCompatActivity) getContext()).getSupportFragmentManager().popBackStack(R.id.FirstFragment, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        NavHostFragment.findNavController(BuildRouteMapFragment.this).navigate(R.id.action_BuildRouteMapFragment_to_FirstFragment);
+        routeMapViewModel.commitRouteToDatabase(() -> {
+            ((AppCompatActivity) getContext()).getSupportFragmentManager().popBackStack(R.id.FirstFragment, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            NavHostFragment.findNavController(BuildRouteMapFragment.this).navigate(R.id.action_BuildRouteMapFragment_to_FirstFragment);
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        final List<PointOfInterest> pois = routeMapViewModel.getPois();
         if(!pois.isEmpty()){
-            PointOfInterest last = pois.get(pois.size()-1);
-            map.addMarker(new MarkerOptions().position(last.getLatLng()).title(last.getTitle()));
+            if(map != null){
+                PointOfInterest last = pois.get(pois.size()-1);
+                if(last != null){
+                    map.addMarker(new MarkerOptions().position(last.getLatLng()).title(last.getTitle()));
+                }
+            } else {
+                SupportMapFragment mapFragment =
+                        (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+                if (mapFragment != null) {
+                    mapFragment.getMapAsync((GoogleMap map) -> {
+                        callback.onMapReady(map);
+                        for(PointOfInterest p : pois){
+                            map.addMarker(new MarkerOptions().position(p.getLatLng()).title(p.getTitle()));
+                        }
+                    });
+                }
+            }
         }
+        updateRouteLength();
+        updatePointsOfInterestCount();
     }
 }

@@ -6,8 +6,13 @@ import com.google.firebase.firestore.GeoPoint;
 public class Point {
     private GeoPoint loc;
     private String poi;
+    private LatLng latLng;
 
     public Point() {}
+
+    public Point(LatLng latLng){
+        this.latLng = latLng;
+    }
 
     public Point(GeoPoint loc){
         setLoc(loc);
@@ -23,7 +28,10 @@ public class Point {
         return loc;
     }
 
-    public LatLng getLatLng() {
+    public LatLng getLatLng()  {
+        if(latLng != null){
+            return latLng;
+        }
         return new LatLng(loc.getLatitude(), loc.getLongitude());
     }
 

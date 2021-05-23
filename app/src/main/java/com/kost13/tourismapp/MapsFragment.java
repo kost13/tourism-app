@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -35,6 +36,8 @@ public class MapsFragment extends Fragment {
     private boolean routeDetailsVisible;
     private String routeId;
     private View currentView;
+    boolean mapPreview = false;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,8 +47,16 @@ public class MapsFragment extends Fragment {
         // TODO pass to fragment
 
         if (getArguments() != null) {
-            routeId = getArguments().getString("routeId");
-            Log.d("maps fragmnet", "routeId " + routeId);
+            String preview = getArguments().getString("preview");
+            mapPreview = preview != null;
+
+            if(mapPreview){
+                RouteMapViewModel routeMapViewModel = new ViewModelProvider(requireActivity()).get(RouteMapViewModel.class);
+                mapsViewModel.setRouteMapViewModel(routeMapViewModel);
+            }
+
+//            routeId = getArguments().getString("routeId");
+//            Log.d("maps fragmnet", "routeId " + routeId);
         } else {
             routeId = "jRP5OOxRLrr51zQxcGen";
         }
@@ -90,7 +101,7 @@ public class MapsFragment extends Fragment {
     private void zoomMapToRoute() {
         LatLngBounds bounds = mapsViewModel.getRouteBounds();
         if (bounds != null) {
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 40));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 80));
         }
     }
 
@@ -217,7 +228,11 @@ public class MapsFragment extends Fragment {
         setupRouteDetails();
         setupControls();
 
-        mapsViewModel.downloadRoute(this::tryAddRoutePolygon);
-        mapsViewModel.downloadPois(this::tryAddPois);
+
+        if(!mapPreview){
+            mapsViewModel.downloadRoute(this::tryAddRoutePolygon);
+            mapsViewModel.downloadPois(this::tryAddPois);
+        }
+
     }
 }
