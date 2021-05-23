@@ -10,6 +10,7 @@ import java.util.List;
 
 public class Route {
     private String title;
+    private String userId;
     private String description;
     private String image;
     private List<Point> points;
@@ -69,7 +70,7 @@ public class Route {
         double length = 0.0;
         Point prev_point = points.get(0);
         for (int i = 1; i < points.size(); i++) {
-            length += SphericalUtil.computeDistanceBetween(prev_point.getLatLng(), points.get(i).getLatLng());
+            length += SphericalUtil.computeDistanceBetween(prev_point.latLng(), points.get(i).latLng());
             prev_point = points.get(i);
         }
 
@@ -87,8 +88,8 @@ public class Route {
         return poi_count;
     }
 
-    public List<LatLng> getPointCoordinates() {
-        return Lists.transform(points, Point::getLatLng);
+    public List<LatLng> generatePointCoordinates() {
+        return Lists.transform(points, Point::latLng);
     }
 
     public String getId() {
@@ -99,11 +100,19 @@ public class Route {
         this.id = id;
     }
 
-    public Uri getImageUri() {
+    public Uri imageUri() {
         return imageUri;
     }
 
     public void setImageUri(Uri imageUri) {
         this.imageUri = imageUri;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

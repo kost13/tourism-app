@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
@@ -12,9 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-public class CreateRoutePoiFragment extends Fragment {
+import java.util.List;
 
-    PointOfInterest poi;
+public class CreateRoutePoiFragment extends Fragment {
 
     public CreateRoutePoiFragment() {
         // Required empty public constructor
@@ -25,14 +26,6 @@ public class CreateRoutePoiFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_create_route_poi, container, false);
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            poi = (PointOfInterest) getArguments().getSerializable("poi");
-        }
     }
 
     @Override
@@ -48,9 +41,14 @@ public class CreateRoutePoiFragment extends Fragment {
         RouteDataSetupFragment fragment = (RouteDataSetupFragment) getChildFragmentManager().findFragmentById(R.id.routeDataSetupFragment);
         RouteBasicData data = fragment.getData();
 
-        poi.setTitle(data.getTitle());
-        poi.setDescription(data.getDescription());
-        poi.setImageUri(data.getImageUri());
+        RouteMapViewModel routeMapViewModel = new ViewModelProvider(requireActivity()).get(RouteMapViewModel.class);
+        List<PointOfInterest> pois = routeMapViewModel.getPois();
+        if(!pois.isEmpty()){
+            PointOfInterest poi = pois.get(pois.size()-1);
+            poi.setTitle(data.getTitle());
+            poi.setDescription(data.getDescription());
+            poi.setImageUri(data.getImageUri());
+        }
 
         NavHostFragment.findNavController(CreateRoutePoiFragment.this).popBackStack();
     }

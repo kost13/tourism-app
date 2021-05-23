@@ -123,17 +123,34 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/routeDescription"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="You can make a view clickable, as a button, by adding the android:onClick attribute in the XML layout. For example, you can make an image act like a button by adding android:onClick to the ImageView.
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/routeDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:layout_gravity="left"
+                        android:text="You can make a view clickable, as a button, by adding the android:onClick attribute in the XML layout. For example, you can make an image act like a button by adding android:onClick to the ImageView.
 In this task you create a prototype of an app for ordering desserts from a café. After starting a new project based on the Basic Activity template, you modify the TextView with appropriate text, and add images that the user can tap.
 1.1 Start the new project Start a new Android Studio project with the app name Droid Cafe. Choose the Basic Activity template, and accept the default Activity name (MainActivity). Make sure the Generate Layout file and Backwards Compatibility (AppCompat) options are selected.
     Click Finish. fhe project opens with two layouts in the res > layout folder: activity_main.xml for the app bar and floating action button (which you don't change in this task), and content_main.xml for everything else in the layout. 4. Open content_main.xml and click the Design tab (if it is not already selected) to show the layout editor. 5. Select the TextView in the layout and open the Attributes pane. 6. Change the textintro attributes as follows:"
-                    android:visibility="visible" />
+                        android:visibility="visible"/>
+
+                    <ImageView
+                        android:id="@+id/routeImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_gravity="right"
+                        tools:src="@tools:sample/backgrounds/scenic" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

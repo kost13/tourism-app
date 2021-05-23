@@ -5,6 +5,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class Database {
 
@@ -12,8 +14,12 @@ public class Database {
     private static final String DB_ROUTES = "routes";
     private static final String DB_ROUTE_POIS = "route_pois";
 
+    private static final String STORAGE_PROFILE = "profile_images";
+    private static final String STORAGE_ROUTES = "route_images";
+
     private static FirebaseDatabase firebaseDatabase;
     private static FirebaseFirestore firestore;
+    private static StorageReference storage;
 
     private static DatabaseReference openDatabaseReference(String reference) {
         if (firebaseDatabase == null) {
@@ -50,5 +56,20 @@ public class Database {
         }
         return getUsersDb().orderByChild("name").startAt(name).endAt(name + "\uf8ff");
 
+    }
+
+    private static StorageReference getStorage(String folderName){
+        if(storage == null){
+            storage = FirebaseStorage.getInstance().getReference();
+        }
+        return storage.child(folderName);
+    }
+
+    public static StorageReference getRouteImageStorage(){
+        return getStorage(STORAGE_ROUTES);
+    }
+
+    public static StorageReference getProfileImageStorage(){
+        return getStorage(STORAGE_PROFILE);
     }
 }

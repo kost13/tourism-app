@@ -25,10 +25,14 @@ public class Point {
     }
 
     public GeoPoint getLoc() {
-        return loc;
+        if(loc != null){
+            return loc;
+        }
+
+        return new GeoPoint(latLng.latitude, latLng.longitude);
     }
 
-    public LatLng getLatLng()  {
+    public LatLng latLng()  {
         if(latLng != null){
             return latLng;
         }

@@ -1,17 +1,27 @@
 package com.kost13.tourismapp;
 
+import android.net.Uri;
+
 import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RouteMapViewModel extends ViewModel {
     private RouteBasicData basicData;
     private List<LatLng> points;
     private List<PointOfInterest> pois;
+
+    private interface ImageSavedCallback {
+        public void imageSaved(String url);
+    }
 
     public RouteMapViewModel(){
         setPoints(new ArrayList<>());
@@ -23,11 +33,72 @@ public class RouteMapViewModel extends ViewModel {
     }
 
     public void commitRouteToDatabase(OnDataReadyCallback callback){
-        //
 
-        System.out.println("hehe");
-        callback.onDataReady();
+        String routeId = Database.getRoutesDb().document().getId();
 
+        List<Point> pointsList = commitPOIs(routeId);
+
+        saveImage(basicData.getImageUri(), (imgPath) -> {
+            Route route = new Route();
+            route.setTitle(basicData.getTitle());
+            route.setDescription(basicData.getDescription());
+            route.setUserId(Auth.getCurrentUser());
+            route.setPoints(pointsList);
+            route.setImage(imgPath);
+            Database.getRoutesDb().document(routeId).set(route).addOnCompleteListener(task -> {
+                points.clear();
+                pois.clear();
+                basicData = null;
+                callback.onDataReady();
+            });
+        });
+    }
+
+    private void saveImage(Uri image, ImageSavedCallback callback){
+        if(image == null){
+            callback.imageSaved(null);
+            return;
+        }
+
+        int uriHash = image.hashCode();
+        String user = Auth.getCurrentUser();
+        String imageId = user + "_" + uriHash;
+        StorageReference ref = Database.getRouteImageStorage().child(imageId);
+        ref.putFile(image).addOnSuccessListener(taskSnapshot -> {
+            if (taskSnapshot.getMetadata() != null) {
+                if (taskSnapshot.getMetadata().getReference() != null) {
+                    Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
+                    result.addOnSuccessListener(uri -> callback.imageSaved(uri.toString()));
+                }
+            }
+        });
+    }
+
+    private List<Point> commitPOIs(String routeId){
+        List<Point> pointsList = new ArrayList<>();
+        Map<LatLng, String> pointsMap = new HashMap<>();
+
+        for(PointOfInterest poi : pois){
+            poi.setRoute(routeId);
+            String id = Database.getRoutePoisDb().document().getId();
+            saveImage(poi.imageUri(), (imgPath) -> {
+                poi.setImage(imgPath);
+                Database.getRoutePoisDb().document(id).set(poi);
+            });
+
+            pointsMap.put(poi.getLatLng(), id);
+        }
+
+        for(LatLng p : points){
+            Point point = new Point(p);
+            String poi = pointsMap.getOrDefault(p, "");
+            if(!poi.isEmpty()){
+                point.setPoi(poi);
+            }
+            pointsList.add(point);
+        }
+
+        return pointsList;
     }
 
     public RouteBasicData getBasicData() {

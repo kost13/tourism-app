@@ -53,10 +53,15 @@ public class MapsFragment extends Fragment {
             if(mapPreview){
                 RouteMapViewModel routeMapViewModel = new ViewModelProvider(requireActivity()).get(RouteMapViewModel.class);
                 mapsViewModel.setRouteMapViewModel(routeMapViewModel);
+            } else {
+                String route = getArguments().getString("routeId");
+                if(route != null){
+                    routeId = route;
+                } else {
+                    routeId = "jRP5OOxRLrr51zQxcGen";
+                }
+                Log.d("maps fragmnet", "routeId " + routeId);
             }
-
-//            routeId = getArguments().getString("routeId");
-//            Log.d("maps fragmnet", "routeId " + routeId);
         } else {
             routeId = "jRP5OOxRLrr51zQxcGen";
         }
@@ -118,10 +123,16 @@ public class MapsFragment extends Fragment {
         TextView description = currentView.findViewById(R.id.routeDescription);
         description.setText(route.getDescription());
 
+        String url = route.getImage();
+
+        if(url != null){
+            ImageView routeImage = currentView.findViewById(R.id.routeImageView);
+            setPoiImage(routeImage, url);
+        }
     }
 
     private void addRouteToMap(Route route, GoogleMap map) {
-        List<LatLng> points = route.getPointCoordinates();
+        List<LatLng> points = route.generatePointCoordinates();
 
         map.addPolyline(new PolylineOptions()
                 .color(getResources().getColor(R.color.teal_200, getActivity().getTheme()))
@@ -230,8 +241,8 @@ public class MapsFragment extends Fragment {
 
 
         if(!mapPreview){
-            mapsViewModel.downloadRoute(this::tryAddRoutePolygon);
-            mapsViewModel.downloadPois(this::tryAddPois);
+            mapsViewModel.downloadRoute(routeId, this::tryAddRoutePolygon);
+            mapsViewModel.downloadPois(routeId, this::tryAddPois);
         }
 
     }

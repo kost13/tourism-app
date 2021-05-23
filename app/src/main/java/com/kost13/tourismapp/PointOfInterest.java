@@ -7,7 +7,7 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.io.Serializable;
 
-public class PointOfInterest implements Serializable {
+public class PointOfInterest {
     private String description;
     private int geohash;
     private String image;
@@ -79,7 +79,7 @@ public class PointOfInterest implements Serializable {
         return new LatLng(loc.getLatitude(), loc.getLongitude());
     }
 
-    public Uri getImageUri() {
+    public Uri imageUri() {
         return imageUri;
     }
 

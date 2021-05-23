@@ -39,7 +39,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void getUserRoutesData(OnDataReadyCallback callback) {
-        Database.getRoutesDb().whereEqualTo("user_id", userId).get().addOnCompleteListener(task -> {
+        Database.getRoutesDb().whereEqualTo("userId", userId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 routes.clear();
                 for (QueryDocumentSnapshot document : task.getResult()) {

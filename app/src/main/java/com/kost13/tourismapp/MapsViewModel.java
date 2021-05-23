@@ -22,8 +22,8 @@ public class MapsViewModel extends ViewModel {
         pois = new ArrayList<>();
     }
 
-    public void downloadRoute(OnDataReadyCallback callback) {
-        String routeId = "jRP5OOxRLrr51zQxcGen";
+    public void downloadRoute(String routeId, OnDataReadyCallback callback) {
+
         Database.getRoutesDb().document(routeId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 route = task.getResult().toObject(Route.class);
@@ -38,9 +38,7 @@ public class MapsViewModel extends ViewModel {
         });
     }
 
-    public void downloadPois(OnDataReadyCallback callback) {
-        String routeId = "jRP5OOxRLrr51zQxcGen";
-
+    public void downloadPois(String routeId, OnDataReadyCallback callback) {
         Database.getRoutePoisDb().whereEqualTo("route", routeId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 pois.clear();
@@ -83,7 +81,7 @@ public class MapsViewModel extends ViewModel {
         double min_lng = Double.MAX_VALUE;
 
         for (Point point : route.getPoints()) {
-            LatLng latlng = point.getLatLng();
+            LatLng latlng = point.latLng();
             min_lat = Double.min(min_lat, latlng.latitude);
             max_lat = Double.max(max_lat, latlng.latitude);
 
