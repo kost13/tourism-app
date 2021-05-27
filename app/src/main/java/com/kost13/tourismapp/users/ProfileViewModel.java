@@ -16,14 +16,34 @@ import java.util.List;
 public class ProfileViewModel extends ViewModel {
 
     private User user;
-    private final String userId;
+    private String userId;
     private final List<Route> routes;
 
+    public ProfileViewModel(){
+        routes = new ArrayList<>();
+    }
 
     ProfileViewModel(String userId) {
         this.userId = userId;
         routes = new ArrayList<>();
         Log.d("ProfileViewModel", userId);
+    }
+
+    void setUserId(String userId){
+        this.userId = userId;
+    }
+
+    void setUser(User user){ this.user = user;}
+
+    void commitUser(OnDataReadyCallback callback){
+        //TODO save to database
+        callback.onDataReady();
+    }
+
+
+    void clear(){
+        userId = null;
+        routes.clear();
     }
 
     public void getUserData(OnDataReadyCallback callback) {

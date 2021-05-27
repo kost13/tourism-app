@@ -49,6 +49,9 @@
         <action
             android:id="@+id/action_ProfileFragment_to_MapFragment"
             app:destination="@id/MapFragment" />
+        <action
+            android:id="@+id/action_ProfileFragment_to_ProfileEditFragment"
+            app:destination="@id/ProfileEditFragment" />
     </fragment>
     <fragment
         android:id="@+id/CreateRouteFragment"
@@ -79,6 +82,15 @@
         <action
             android:id="@+id/action_BuildRouteMapFragment_to_CreateRoutePoiFragment"
             app:destination="@id/CreateRoutePoiFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ProfileEditFragment"
+        android:name="com.kost13.tourismapp.users.ProfileEditFragment"
+        android:label="ProfileEditFragment"
+        tools:layout="@layout/fragment_profile_edit">
+        <action
+            android:id="@+id/action_ProfileEditFragment_to_ProfileFragment"
+            app:destination="@id/ProfileFragment" />
     </fragment>
     <action android:id="@+id/action_global_ProfileFragment" app:destination="@id/ProfileFragment" />
 </navigation>

@@ -8,17 +8,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.kost13.tourismapp.Auth;
 import com.kost13.tourismapp.R;
 import com.kost13.tourismapp.maps.Route;
+import com.kost13.tourismapp.maps.RouteMapViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -37,6 +41,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
+
         if (getArguments() != null) {
             String userId = getArguments().getString("userId");
             Log.d("profile fragmnet", "userID " + userId);
@@ -44,9 +50,10 @@ public class ProfileFragment extends Fragment {
             editEnabled = userId.equals(Auth.getCurrentUser());
 
             Log.d("ProfileActivity uuid", userId);
-
-            viewModel = new ProfileViewModel(userId);
+            viewModel.clear();
+            viewModel.setUserId(userId);
         }
+
     }
 
     @Override
@@ -176,6 +183,9 @@ public class ProfileFragment extends Fragment {
         webpage.setOnClickListener(this::webpageClicked);
 
         showProfileImage(user.getProfileImageUrl());
+
+        ImageButton editButton = currentView.findViewById(R.id.editProfile);
+        editButton.setOnClickListener(this::editProfile);
     }
 
 
@@ -232,5 +242,9 @@ public class ProfileFragment extends Fragment {
                     .centerCrop()
                     .into(imageView);
         }
+    }
+
+    public void editProfile(View view){
+        NavHostFragment.findNavController(ProfileFragment.this).navigate(R.id.action_ProfileFragment_to_ProfileEditFragment);
     }
 }
