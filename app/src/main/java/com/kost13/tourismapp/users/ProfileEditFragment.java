@@ -23,6 +23,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.kost13.tourismapp.R;
 import com.kost13.tourismapp.maps.BuildRouteMapFragment;
 import com.squareup.picasso.Picasso;
@@ -85,7 +86,7 @@ public class ProfileEditFragment extends Fragment {
 
     private void fillFields(User user) {
 
-        TextView nameView = currentView.findViewById(R.id.nameTextView);
+        EditText nameView = currentView.findViewById(R.id.nameTextView);
         nameView.setText(user.getName());
 
         EditText bioView = currentView.findViewById(R.id.profileBio);
@@ -95,7 +96,7 @@ public class ProfileEditFragment extends Fragment {
         languages.setText(String.join(", ", user.getLanguages()));
 
         EditText locations = currentView.findViewById(R.id.locationsTextView);
-        locations.setText(String.join(", ", user.getLocations()));
+        locations.setText(user.getLocation());
 
         EditText phone = currentView.findViewById(R.id.phoneValue);
         phone.setText(user.getTelephone());
@@ -108,10 +109,42 @@ public class ProfileEditFragment extends Fragment {
 
         showProfileImage(user.getProfileImageUrl());
 
+        SwitchMaterial guideSwitch = currentView.findViewById(R.id.switchGuide);
+        guideSwitch.setChecked(user.getIsGuide());
+
+    }
+
+    private void saveDataFromFileds(User user){
+        EditText nameView = currentView.findViewById(R.id.nameTextView);
+        user.setName(nameView.getText().toString());
+
+        EditText bioView = currentView.findViewById(R.id.profileBio);
+        user.setBio(bioView.getText().toString());
+
+//        TextView languages = currentView.findViewById(R.id.languagesTextView);
+
+        EditText locations = currentView.findViewById(R.id.locationsTextView);
+        user.setLocation(locations.getText().toString());
+
+        EditText phone = currentView.findViewById(R.id.phoneValue);
+        user.setTelephone(phone.getText().toString());
+
+        EditText email = currentView.findViewById(R.id.emailValue);
+        user.setEmail(email.getText().toString());
+
+        EditText webpage = currentView.findViewById(R.id.webpageValue);
+        user.setWebpage(webpage.getText().toString());
+
+        SwitchMaterial guideSwitch = currentView.findViewById(R.id.switchGuide);
+        user.setIsGuide(guideSwitch.isChecked());
+
+        user.setImage(image);
     }
 
     private void saveData(View view){
         User user = viewModel.getUser();
+
+        saveDataFromFileds(user);
 
         viewModel.setUser(user);
         viewModel.commitUser(() -> {
@@ -121,8 +154,7 @@ public class ProfileEditFragment extends Fragment {
     }
 
     private void close(View view){
-        ((AppCompatActivity) getContext()).getSupportFragmentManager().popBackStack(R.id.ProfileEditFragment, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        NavHostFragment.findNavController(ProfileEditFragment.this).navigate(R.id.action_ProfileEditFragment_to_ProfileFragment);
+        NavHostFragment.findNavController(ProfileEditFragment.this).popBackStack();
     }
 
     private void showProfileImage(String url) {
@@ -154,6 +186,7 @@ public class ProfileEditFragment extends Fragment {
         }
 
         int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int size = (int) (0.4 * width);
 
         RequestCreator creator;
 
@@ -166,7 +199,7 @@ public class ProfileEditFragment extends Fragment {
             creator = Picasso.with(getContext()).load(R.drawable.ic_launcher_foreground);
         }
 
-        creator.resize(width, 4 * width / 5)
+        creator.resize(size, size)
                 .centerCrop()
                 .into(imageView);
 

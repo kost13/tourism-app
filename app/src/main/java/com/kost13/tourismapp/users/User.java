@@ -1,5 +1,7 @@
 package com.kost13.tourismapp.users;
 
+import android.net.Uri;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -9,20 +11,22 @@ public class User implements Serializable {
     private String id;
     private String telephone;
     private String email;
-    private ArrayList<String> locations;
+    private String location;
     private String webpage;
     private ArrayList<String> languages;
     private String profileImageUrl;
+    private boolean isGuide = false;
+    private Uri image;
 
     public User() {
     }
 
-    public User(String name, String bio, String telephone, String email, ArrayList<String> locations, String webpage, ArrayList<String> languages, String profileImageUrl) {
+    public User(String name, String bio, String telephone, String email, String location, String webpage, ArrayList<String> languages, String profileImageUrl) {
         this.name = name;
         this.bio = bio;
         this.telephone = telephone;
         this.email = email;
-        this.locations = locations;
+        this.location = location;
         this.webpage = webpage;
         this.languages = languages;
         this.setProfileImageUrl(profileImageUrl);
@@ -68,12 +72,12 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public ArrayList<String> getLocations() {
-        return locations;
+    public String getLocation() {
+        return location;
     }
 
-    public void setLocations(ArrayList<String> locations) {
-        this.locations = locations;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getWebpage() {
@@ -98,5 +102,21 @@ public class User implements Serializable {
 
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public boolean getIsGuide() {
+        return isGuide;
+    }
+
+    public void setIsGuide(boolean guide) {
+        isGuide = guide;
+    }
+
+    public Uri imageUri() {
+        return image;
+    }
+
+    public void setImage(Uri image) {
+        this.image = image;
     }
 }

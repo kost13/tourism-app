@@ -25,6 +25,8 @@ import com.kost13.tourismapp.maps.Route;
 import com.kost13.tourismapp.maps.RouteMapViewModel;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class ProfileFragment extends Fragment {
@@ -168,7 +170,7 @@ public class ProfileFragment extends Fragment {
         languages.setText(String.join(", ", user.getLanguages()));
 
         TextView locations = currentView.findViewById(R.id.locationsTextView);
-        locations.setText(String.join(", ", user.getLocations()));
+        locations.setText(user.getLocation());
 
         TextView phone = currentView.findViewById(R.id.phoneValue);
         phone.setText(user.getTelephone());
@@ -186,6 +188,9 @@ public class ProfileFragment extends Fragment {
 
         ImageButton editButton = currentView.findViewById(R.id.editProfile);
         editButton.setOnClickListener(this::editProfile);
+
+        TextView guideTV = currentView.findViewById(R.id.textViewGuide);
+        guideTV.setVisibility(user.getIsGuide() ? View.VISIBLE : View.INVISIBLE);
     }
 
 

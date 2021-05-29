@@ -29,7 +29,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_launcher_foreground" />
 
-            <TextView
+            <EditText
                 android:id="@+id/nameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Locactions"
+                android:text="Locaction"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
@@ -68,22 +68,31 @@
                 app:layout_constraintTop_toBottomOf="@+id/locationsTextView"
                 app:layout_constraintVertical_bias="0.153" />
 
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchGuide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:checked="false"
+                android:text="Guide"
+                app:layout_constraintTop_toBottomOf="@+id/languagesTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.518"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
             <EditText
                 android:id="@+id/profileBio"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
                 android:text="Bio"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/languagesTextView" />
-
+                app:layout_constraintTop_toBottomOf="@+id/switchGuide"
+            />
 
             <TextView
                 android:id="@+id/contacttextView"
@@ -207,6 +216,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/saveButton"
                 app:layout_constraintTop_toBottomOf="@+id/contactLayout" />
+
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

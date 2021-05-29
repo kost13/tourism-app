@@ -10,6 +10,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.StorageReference;
 import com.kost13.tourismapp.Auth;
 import com.kost13.tourismapp.Database;
+import com.kost13.tourismapp.ImageSavedCallback;
 import com.kost13.tourismapp.OnDataReadyCallback;
 import com.kost13.tourismapp.maps.Point;
 import com.kost13.tourismapp.maps.PointOfInterest;
@@ -26,9 +27,7 @@ public class RouteMapViewModel extends ViewModel {
     private List<LatLng> points;
     private List<PointOfInterest> pois;
 
-    private interface ImageSavedCallback {
-        public void imageSaved(String url);
-    }
+
 
     public RouteMapViewModel(){
         setPoints(new ArrayList<>());
@@ -45,7 +44,7 @@ public class RouteMapViewModel extends ViewModel {
 
         List<Point> pointsList = commitPOIs(routeId);
 
-        saveImage(basicData.getImageUri(), (imgPath) -> {
+        Database.saveImage(basicData.getImageUri(), (imgPath) -> {
             Route route = new Route();
             route.setTitle(basicData.getTitle());
             route.setDescription(basicData.getDescription());
@@ -61,26 +60,6 @@ public class RouteMapViewModel extends ViewModel {
         });
     }
 
-    private void saveImage(Uri image, ImageSavedCallback callback){
-        if(image == null){
-            callback.imageSaved(null);
-            return;
-        }
-
-        int uriHash = image.hashCode();
-        String user = Auth.getCurrentUser();
-        String imageId = user + "_" + uriHash;
-        StorageReference ref = Database.getRouteImageStorage().child(imageId);
-        ref.putFile(image).addOnSuccessListener(taskSnapshot -> {
-            if (taskSnapshot.getMetadata() != null) {
-                if (taskSnapshot.getMetadata().getReference() != null) {
-                    Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
-                    result.addOnSuccessListener(uri -> callback.imageSaved(uri.toString()));
-                }
-            }
-        });
-    }
-
     private List<Point> commitPOIs(String routeId){
         List<Point> pointsList = new ArrayList<>();
         Map<LatLng, String> pointsMap = new HashMap<>();
@@ -88,7 +67,7 @@ public class RouteMapViewModel extends ViewModel {
         for(PointOfInterest poi : pois){
             poi.setRoute(routeId);
             String id = Database.getRoutePoisDb().document().getId();
-            saveImage(poi.imageUri(), (imgPath) -> {
+            Database.saveImage(poi.imageUri(), (imgPath) -> {
                 poi.setImage(imgPath);
                 Database.getRoutePoisDb().document(id).set(poi);
             });

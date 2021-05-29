@@ -1,5 +1,8 @@
 package com.kost13.tourismapp;
 
+import android.net.Uri;
+
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -71,5 +74,25 @@ public class Database {
 
     public static StorageReference getProfileImageStorage(){
         return getStorage(STORAGE_PROFILE);
+    }
+
+    public static void saveImage(Uri image, ImageSavedCallback callback){
+        if(image == null){
+            callback.imageSaved(null);
+            return;
+        }
+
+        int uriHash = image.hashCode();
+        String user = Auth.getCurrentUser();
+        String imageId = user + "_" + uriHash;
+        StorageReference ref = getRouteImageStorage().child(imageId);
+        ref.putFile(image).addOnSuccessListener(taskSnapshot -> {
+            if (taskSnapshot.getMetadata() != null) {
+                if (taskSnapshot.getMetadata().getReference() != null) {
+                    Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
+                    result.addOnSuccessListener(uri -> callback.imageSaved(uri.toString()));
+                }
+            }
+        });
     }
 }

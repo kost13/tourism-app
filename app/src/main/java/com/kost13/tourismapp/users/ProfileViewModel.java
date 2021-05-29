@@ -36,10 +36,14 @@ public class ProfileViewModel extends ViewModel {
     void setUser(User user){ this.user = user;}
 
     void commitUser(OnDataReadyCallback callback){
-        //TODO save to database
-        callback.onDataReady();
-    }
 
+        Database.saveImage(user.imageUri(), (String url) -> {
+            user.setProfileImageUrl(url);
+            Database.getUsersDb().child(userId).setValue(user).addOnCompleteListener(task -> {
+                callback.onDataReady();
+            });
+        });
+    }
 
     void clear(){
         userId = null;
