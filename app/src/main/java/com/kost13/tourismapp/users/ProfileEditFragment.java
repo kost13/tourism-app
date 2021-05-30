@@ -196,7 +196,7 @@ public class ProfileEditFragment extends Fragment {
             path = image.toString();
             creator = Picasso.with(getContext()).load(path);
         } else {
-            creator = Picasso.with(getContext()).load(R.drawable.ic_launcher_foreground);
+            creator = Picasso.with(getContext()).load(R.drawable.profile);
         }
 
         creator.resize(size, size)

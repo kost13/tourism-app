@@ -19,15 +19,14 @@
 
             <ImageView
                 android:id="@+id/profileImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="160dp"
+                android:layout_height="149dp"
                 android:layout_marginTop="16dp"
-                android:background="#8E6767"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_launcher_foreground" />
+                app:srcCompat="@drawable/profile" />
 
             <EditText
                 android:id="@+id/nameTextView"

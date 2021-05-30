@@ -44,7 +44,7 @@ public class RouteMapViewModel extends ViewModel {
 
         List<Point> pointsList = commitPOIs(routeId);
 
-        Database.saveImage(basicData.getImageUri(), (imgPath) -> {
+        Database.saveRouteImage(basicData.getImageUri(), (imgPath) -> {
             Route route = new Route();
             route.setTitle(basicData.getTitle());
             route.setDescription(basicData.getDescription());
@@ -67,7 +67,7 @@ public class RouteMapViewModel extends ViewModel {
         for(PointOfInterest poi : pois){
             poi.setRoute(routeId);
             String id = Database.getRoutePoisDb().document().getId();
-            Database.saveImage(poi.imageUri(), (imgPath) -> {
+            Database.saveRouteImage(poi.imageUri(), (imgPath) -> {
                 poi.setImage(imgPath);
                 Database.getRoutePoisDb().document(id).set(poi);
             });

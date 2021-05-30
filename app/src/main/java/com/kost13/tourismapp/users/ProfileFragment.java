@@ -24,6 +24,7 @@ import com.kost13.tourismapp.R;
 import com.kost13.tourismapp.maps.Route;
 import com.kost13.tourismapp.maps.RouteMapViewModel;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import org.w3c.dom.Text;
 
@@ -238,15 +239,22 @@ public class ProfileFragment extends Fragment {
     }
 
     private void showProfileImage(String url) {
+        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int size = (int) (0.4 * width);
+
+        RequestCreator creator;
+
+        ImageView imageView = currentView.findViewById(R.id.profileImageView);
+
         if (url != null && !url.isEmpty()) {
-            ImageView imageView = (ImageView) currentView.findViewById(R.id.profileImageView);
-            int width = Resources.getSystem().getDisplayMetrics().widthPixels;
-            int size = 4 * width / 10;
-            Picasso.with(getContext()).load(url)
-                    .resize(size, size)
-                    .centerCrop()
-                    .into(imageView);
+            creator = Picasso.with(getContext()).load(url);
+        } else {
+            creator = Picasso.with(getContext()).load(R.drawable.profile);
         }
+
+        creator.resize(size, size)
+                .centerCrop()
+                .into(imageView);
     }
 
     public void editProfile(View view){

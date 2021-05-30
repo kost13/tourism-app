@@ -61,23 +61,31 @@ public class Database {
 
     }
 
-    private static StorageReference getStorage(String folderName){
-        if(storage == null){
+    private static StorageReference getStorage(String folderName) {
+        if (storage == null) {
             storage = FirebaseStorage.getInstance().getReference();
         }
         return storage.child(folderName);
     }
 
-    public static StorageReference getRouteImageStorage(){
-        return getStorage(STORAGE_ROUTES);
+//    public static StorageReference getRouteImageStorage() {
+//        return getStorage(STORAGE_ROUTES);
+//    }
+//
+//    public static StorageReference getProfileImageStorage() {
+//        return getStorage(STORAGE_PROFILE);
+//    }
+
+    public static void saveRouteImage(Uri image, ImageSavedCallback callback) {
+        saveImage(image, callback, STORAGE_ROUTES);
     }
 
-    public static StorageReference getProfileImageStorage(){
-        return getStorage(STORAGE_PROFILE);
+    public static void saveProfileImage(Uri image, ImageSavedCallback callback) {
+        saveImage(image, callback, STORAGE_PROFILE);
     }
 
-    public static void saveImage(Uri image, ImageSavedCallback callback){
-        if(image == null){
+    private static void saveImage(Uri image, ImageSavedCallback callback, String folderName) {
+        if (image == null) {
             callback.imageSaved(null);
             return;
         }
@@ -85,7 +93,7 @@ public class Database {
         int uriHash = image.hashCode();
         String user = Auth.getCurrentUser();
         String imageId = user + "_" + uriHash;
-        StorageReference ref = getRouteImageStorage().child(imageId);
+        StorageReference ref = getStorage(folderName).child(imageId);
         ref.putFile(image).addOnSuccessListener(taskSnapshot -> {
             if (taskSnapshot.getMetadata() != null) {
                 if (taskSnapshot.getMetadata().getReference() != null) {

@@ -37,7 +37,7 @@ public class ProfileViewModel extends ViewModel {
 
     void commitUser(OnDataReadyCallback callback){
 
-        Database.saveImage(user.imageUri(), (String url) -> {
+        Database.saveProfileImage(user.imageUri(), (String url) -> {
             user.setProfileImageUrl(url);
             Database.getUsersDb().child(userId).setValue(user).addOnCompleteListener(task -> {
                 callback.onDataReady();
