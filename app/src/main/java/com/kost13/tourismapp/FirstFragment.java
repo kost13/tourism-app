@@ -34,5 +34,8 @@ public class FirstFragment extends Fragment {
 
         view.findViewById(R.id.routeButton).setOnClickListener(view1 -> NavHostFragment.findNavController(FirstFragment.this)
                 .navigate(R.id.action_FirstFragment_to_CreateRouteFragment));
+
+        view.findViewById(R.id.placeButton).setOnClickListener(view1 -> NavHostFragment.findNavController(FirstFragment.this)
+                .navigate(R.id.action_FirstFragment_to_PlacesFragment));
     }
 }

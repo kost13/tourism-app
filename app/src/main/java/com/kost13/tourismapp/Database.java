@@ -15,10 +15,12 @@ public class Database {
 
     private static final String DB_USERS = "users";
     private static final String DB_ROUTES = "routes";
+    private static final String DB_PLACES = "places";
     private static final String DB_ROUTE_POIS = "route_pois";
 
     private static final String STORAGE_PROFILE = "profile_images";
     private static final String STORAGE_ROUTES = "route_images";
+    private static final String STORAGE_PLACES = "place_images";
 
     private static FirebaseDatabase firebaseDatabase;
     private static FirebaseFirestore firestore;
@@ -45,6 +47,10 @@ public class Database {
 
     public static CollectionReference getRoutesDb() {
         return openFirestoreReference(DB_ROUTES);
+    }
+
+    public static CollectionReference getPlacesDb() {
+        return openFirestoreReference(DB_PLACES);
     }
 
     public static CollectionReference getRoutePoisDb() {
@@ -82,6 +88,10 @@ public class Database {
 
     public static void saveProfileImage(Uri image, ImageSavedCallback callback) {
         saveImage(image, callback, STORAGE_PROFILE);
+    }
+
+    public static void savePlaceImage(Uri image, ImageSavedCallback callback) {
+        saveImage(image, callback, STORAGE_PLACES);
     }
 
     private static void saveImage(Uri image, ImageSavedCallback callback, String folderName) {
