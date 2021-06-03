@@ -6,52 +6,64 @@
     android:layout_height="match_parent"
     tools:context=".FirstFragment">
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/searchGuidesButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/FirebaseUI.Button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/menu_button_height"
         android:layout_marginTop="52dp"
         android:text="Search Guides"
         android:textSize="24sp"
+        app:backgroundTint="@color/dark_primary_color"
+        app:icon="@drawable/ic_search"
+        app:iconSize="52dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/mapsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/FirebaseUI.Button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/menu_button_height"
         android:layout_marginTop="24dp"
+        app:backgroundTint="@color/dark_primary_color"
         android:text="Show map"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:icon="@drawable/ic_map"
+        app:iconSize="52dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchGuidesButton"
-        app:layout_constraintVertical_bias="0.053" />
+        app:layout_constraintTop_toBottomOf="@+id/searchGuidesButton" />
 
     <Button
-        android:id="@+id/routeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/placeButton"
+        style="@style/FirebaseUI.Button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/menu_button_height"
         android:layout_marginTop="24dp"
-        android:text="Create route"
+        app:backgroundTint="@color/dark_primary_color"
+        android:text="Add place"
         android:textSize="24sp"
+        app:icon="@drawable/ic_iconfinder_map_pin_2561463"
+        app:iconSize="52dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mapsButton" />
 
     <Button
-        android:id="@+id/placeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/routeButton"
+        style="@style/FirebaseUI.Button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/menu_button_height"
         android:layout_marginTop="24dp"
-        android:text="Add place"
+        app:backgroundTint="@color/dark_primary_color"
+        android:text="Create route"
         android:textSize="24sp"
+        app:icon="@drawable/ic_navigation"
+        app:iconSize="52dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.535"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/routeButton" />
+        app:layout_constraintTop_toBottomOf="@+id/placeButton" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

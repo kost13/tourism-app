@@ -15,10 +15,11 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.TourismApp.PopupOverlay" />
+            android:background="@color/dark_primary_color"
+            app:logo="@drawable/ic_iconfinder_achievement_6843078"
+            app:popupTheme="@style/Theme.TourismApp.PopupOverlay" >
 
-
+        </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_main" />

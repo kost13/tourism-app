@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,17 +34,6 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment navHostFragment =
                 (NavHostFragment) supportFragmentManager.findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
-
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
-
     }
 
     @Override
@@ -66,25 +56,15 @@ public class MainActivity extends AppCompatActivity {
                 return openProfile();
             case R.id.action_sign_out:
                 return signOut();
-            case R.id.action_settings:
-                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     private boolean openProfile() {
-
-//        NavDirections action = ProfileFragmentDirections.ac
-
         Bundle bundle = new Bundle();
         bundle.putString("userId", Auth.getCurrentUser());
         navController.navigate(R.id.action_global_ProfileFragment, bundle);
-
-
-//        Intent intent = new Intent(this, ProfileActivity.class);
-//        intent.putExtra("UID", Auth.getCurrentUser());
-//        startActivity(intent);
         return true;
     }
 
@@ -105,19 +85,12 @@ public class MainActivity extends AppCompatActivity {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
-                // Successfully signed in
                 Log.d("signIn", "Successfully logging in");
-                // ...
             } else {
                 Log.d("signIn", "Error when logging in");
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
+                Toast.makeText(this, "Error when logging in.", Toast.LENGTH_LONG);
             }
         }
-
-
     }
 
     @Override
@@ -131,7 +104,5 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         Auth.verifyAuth(this);
         Auth.attachListener();
-
-
     }
 }
