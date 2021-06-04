@@ -91,7 +91,7 @@ public class BuildRouteMapFragment extends Fragment {
             map = googleMap;
 
             polyline = map.addPolyline(new PolylineOptions()
-                    .color(getResources().getColor(R.color.purple_700, getActivity().getTheme()))
+                    .color(getResources().getColor(R.color.primary_color, getActivity().getTheme()))
                     .width(12));
 
             googleMap.setOnMapLongClickListener(latLng -> addPoint(latLng));

@@ -1,6 +1,7 @@
 package com.kost13.tourismapp;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.maps.android.SphericalUtil;
 
 import java.util.List;
@@ -21,5 +22,9 @@ public class Utils {
         }
 
         return length*METERS_TO_KM;
+    }
+
+    static public LatLng geoPointToLatLng(final GeoPoint gp){
+        return new LatLng(gp.getLatitude(), gp.getLongitude());
     }
 }

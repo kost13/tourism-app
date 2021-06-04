@@ -67,4 +67,12 @@ public class Place {
     public void setLatLng(LatLng pos){
         this.loc = new GeoPoint(pos.latitude, pos.longitude);
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }

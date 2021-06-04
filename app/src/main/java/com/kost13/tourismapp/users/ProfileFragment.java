@@ -2,6 +2,7 @@ package com.kost13.tourismapp.users;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.PlatformVpnProfile;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.kost13.tourismapp.Auth;
 import com.kost13.tourismapp.R;
+import com.kost13.tourismapp.places.Place;
 import com.kost13.tourismapp.routes.Route;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
@@ -61,6 +63,7 @@ public class ProfileFragment extends Fragment {
 
         viewModel.getUserData(this::setupView);
         viewModel.getUserRoutesData(this::setupRoutes);
+        viewModel.getUserPlacesData(this::setupPlaces);
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
@@ -72,6 +75,31 @@ public class ProfileFragment extends Fragment {
         currentView = view;
         setupView();
         setupRoutes();
+        setupPlaces();
+    }
+
+    private void setupPlaces(){
+        if(currentView == null){
+            return;
+        }
+
+        List<Place> places = viewModel.getPlaces();
+
+        if (places == null) {
+            return;
+        }
+
+        LinearLayout layout = (LinearLayout) currentView.findViewById(R.id.placesProfileLayout);
+
+        if(layout.getChildCount() > 0){
+            return;
+        }
+
+        for (Place place : places) {
+            View itemView = LayoutInflater.from(getContext()).inflate(R.layout.route_row, null, false);
+            setupPlaceView(itemView, place);
+            layout.addView(itemView);
+        }
     }
 
     private void setupRoutes() {
@@ -88,10 +116,36 @@ public class ProfileFragment extends Fragment {
 
         LinearLayout layout = (LinearLayout) currentView.findViewById(R.id.routesProfileLayout);
 
+        if(layout.getChildCount() > 0){
+            return;
+        }
+
         for (Route route : routes) {
             View itemView = LayoutInflater.from(getContext()).inflate(R.layout.route_row, null, false);
             setupRouteView(itemView, route);
             layout.addView(itemView);
+        }
+    }
+
+    private  void setupPlaceView(View view, Place place){
+        TextView title = view.findViewById(R.id.titleTextView);
+        title.setText(place.getTitle());
+        title.setOnClickListener(view1 -> showPlace(place.getId()));
+
+        TextView length = view.findViewById(R.id.routeLengthTextView);
+        length.setVisibility(View.GONE);
+
+        TextView pois = view.findViewById(R.id.routePoisTextView);
+        pois.setVisibility(View.GONE);
+
+        TextView description = view.findViewById(R.id.routeDescriptionTextView);
+        description.setText(chopString(place.getDescription()));
+
+        ImageView img = view.findViewById(R.id.routeImageView);
+        if (place.getImage() != null && !place.getImage().isEmpty()) {
+            setRouteImage(img, place.getImage());
+        } else {
+            img.setVisibility(View.GONE);
         }
     }
 
@@ -133,6 +187,12 @@ public class ProfileFragment extends Fragment {
         Bundle route = new Bundle();
         route.putString("routeId", routeId);
         NavHostFragment.findNavController(ProfileFragment.this).navigate(R.id.action_ProfileFragment_to_MapFragment, route);
+    }
+
+    private void showPlace(String placeId){
+        Bundle route = new Bundle();
+        route.putString("placeId", placeId);
+        NavHostFragment.findNavController(ProfileFragment.this).navigate(R.id.action_ProfileFragment_to_PlaceViewFragmet, route);
     }
 
     private String chopString(String str) {

@@ -136,7 +136,7 @@ public class MapsFragment extends Fragment {
         List<LatLng> points = route.generatePointCoordinates();
 
         map.addPolyline(new PolylineOptions()
-                .color(getResources().getColor(R.color.teal_200, getActivity().getTheme()))
+                .color(getResources().getColor(R.color.primary_color, getActivity().getTheme()))
                 .width(12)
                 .addAll(points));
     }

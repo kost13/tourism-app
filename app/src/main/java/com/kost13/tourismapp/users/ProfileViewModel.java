@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.kost13.tourismapp.Database;
 import com.kost13.tourismapp.OnDataReadyCallback;
+import com.kost13.tourismapp.places.Place;
 import com.kost13.tourismapp.routes.Route;
 
 import java.util.ArrayList;
@@ -17,15 +18,16 @@ public class ProfileViewModel extends ViewModel {
     private User user;
     private String userId;
     private final List<Route> routes;
+    private final List<Place> places;
 
     public ProfileViewModel(){
-        routes = new ArrayList<>();
+        this(null);
     }
 
     ProfileViewModel(String userId) {
         this.userId = userId;
         routes = new ArrayList<>();
-        Log.d("ProfileViewModel", userId);
+        places = new ArrayList<>();
     }
 
     void setUserId(String userId){
@@ -83,7 +85,26 @@ public class ProfileViewModel extends ViewModel {
             }
 
         });
+    }
 
+    public void getUserPlacesData(OnDataReadyCallback callback) {
+        Database.getPlacesDb().whereEqualTo("userId", userId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                places.clear();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Place place = document.toObject(Place.class);
+                    if (place != null) {
+                        place.setId(document.getId());
+                        places.add(place);
+                    }
+                }
+                Log.d("firebase", "places size " + routes.size());
+                callback.onDataReady();
+            } else {
+                Log.d("firebase", "Error getting documents: ", task.getException());
+            }
+
+        });
     }
 
     public User getUser() {
@@ -92,5 +113,9 @@ public class ProfileViewModel extends ViewModel {
 
     public List<Route> getRoutes() {
         return routes;
+    }
+
+    public List<Place> getPlaces() {
+        return places;
     }
 }

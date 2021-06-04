@@ -12,8 +12,7 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="40sp"
-        android:paddingHorizontal="5sp"
-        android:paddingTop="5sp">
+        android:paddingHorizontal="5sp">
 
         <TextView
             android:id="@+id/routeTitle"

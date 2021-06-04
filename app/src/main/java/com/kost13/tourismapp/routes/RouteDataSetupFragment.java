@@ -29,15 +29,12 @@ public class RouteDataSetupFragment extends Fragment {
     private EditText textEditDescription;
     private ImageView imageView;
 
-    public RouteDataSetupFragment() {
-        // Required empty public constructor
-    }
+    public RouteDataSetupFragment() {}
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_route_data_setup, container, false);
     }
 
@@ -104,7 +101,5 @@ public class RouteDataSetupFragment extends Fragment {
         creator.resize(width, 4 * width / 5)
                 .centerCrop()
                 .into(imageView);
-
     }
-
 }

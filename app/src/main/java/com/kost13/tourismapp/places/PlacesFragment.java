@@ -39,19 +39,24 @@ public class PlacesFragment extends Fragment {
 
     private OnMapReadyCallback callback = (GoogleMap googleMap) -> {
 
-            LatLng warsaw = new LatLng(52.22987, 21.01199);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(warsaw));
-            googleMap.moveCamera(CameraUpdateFactory.zoomTo(12.0f));
-            map = googleMap;
+        LatLng warsaw = new LatLng(52.22987, 21.01199);
+        googleMap.moveCamera(CameraUpdateFactory.zoomTo(11.0f));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(warsaw));
+        map = googleMap;
 
-            googleMap.setOnMapLongClickListener(latLng -> addPlace(latLng));
-            googleMap.setOnMarkerClickListener(this::onMarkerClicked);
-            tryAddMarker();
+        googleMap.setOnMapLongClickListener(latLng -> addPlace(latLng));
+
+        googleMap.setOnMarkerClickListener(this::onMarkerClicked);
+        tryAddMarker();
     };
 
-    private boolean onMarkerClicked(Marker marker){
+    public PlacesFragment() {
+        placesMap = new HashMap<>();
+    }
+
+    private boolean onMarkerClicked(Marker marker) {
         RouteBasicData data = placesMap.getOrDefault(marker, null);
-        if(data == null){
+        if (data == null) {
             return false;
         }
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(requireActivity());
@@ -88,10 +93,6 @@ public class PlacesFragment extends Fragment {
         }
     }
 
-    public PlacesFragment() {
-        placesMap = new HashMap<>();
-    }
-
     private void tryAddMarker() {
         PlacesViewModel placesViewModel = new ViewModelProvider(requireActivity()).get(PlacesViewModel.class);
         LatLng pos = placesViewModel.getPosition();
@@ -101,7 +102,7 @@ public class PlacesFragment extends Fragment {
             if (data != null) {
                 markerOptions = markerOptions.title(data.getTitle());
             }
-            Marker marker  = map.addMarker(markerOptions);
+            Marker marker = map.addMarker(markerOptions);
             placesMap.put(marker, data);
         }
     }
