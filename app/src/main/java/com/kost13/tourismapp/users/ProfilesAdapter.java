@@ -1,9 +1,11 @@
 package com.kost13.tourismapp.users;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,14 +19,16 @@ import com.google.firebase.database.Query;
 import com.kost13.tourismapp.Database;
 import com.kost13.tourismapp.ItemSelectedCallback;
 import com.kost13.tourismapp.R;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import java.util.ArrayList;
 
 public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesAdapter.ProfileViewHolder> {
 
+    private final ArrayList<User> users;
     ChildEventListener childListener;
     Query query;
-    private final ArrayList<User> users;
     ItemSelectedCallback userClickedCallback;
 
     public ProfilesAdapter() {
@@ -39,7 +43,7 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesAdapter.Profil
         query.addChildEventListener(childListener);
     }
 
-    public void addOnUserClickListener(ItemSelectedCallback callback){
+    public void addOnUserClickListener(ItemSelectedCallback callback) {
         userClickedCallback = callback;
     }
 
@@ -88,7 +92,7 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesAdapter.Profil
     public ProfileViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         View itemView = LayoutInflater.from(context).inflate(R.layout.profile_row, parent, false);
-        return new ProfileViewHolder(itemView);
+        return new ProfileViewHolder(context, itemView);
     }
 
     @Override
@@ -104,16 +108,49 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesAdapter.Profil
 
     public class ProfileViewHolder extends RecyclerView.ViewHolder {
 
+        private static final int MAX_DESC_LEN = 78;
+        private final int IMG_SIZE = 4 * Resources.getSystem().getDisplayMetrics().widthPixels / 10;
         TextView nameTV;
+        TextView locationTV;
+        TextView bioTV;
+        ImageView imgView;
+        Context context;
 
-        public ProfileViewHolder(@NonNull View itemView) {
+
+        public ProfileViewHolder(Context context, @NonNull View itemView) {
             super(itemView);
-            nameTV = (TextView) itemView.findViewById(R.id.nameTextView);
+            this.context = context;
+            nameTV = itemView.findViewById(R.id.nameTextView);
+            locationTV = itemView.findViewById(R.id.locationTextView);
+            bioTV = itemView.findViewById(R.id.textViewBio);
+            imgView = itemView.findViewById(R.id.profileImageView);
         }
 
         public void bind(User user) {
             nameTV.setText(user.getName());
+            locationTV.setText(user.getLocation());
+            bioTV.setText(chopString(user.getBio()));
+            setProfileImage(imgView, user.getProfileImageUrl());
             nameTV.setOnClickListener((View) -> userClickedCallback.onItemSelected(user.getId()));
+        }
+
+        private String chopString(String str) {
+            if (str.length() <= MAX_DESC_LEN) {
+                return str;
+            }
+            return str.substring(0, MAX_DESC_LEN) + "...";
+        }
+
+        private void setProfileImage(ImageView view, String url) {
+            RequestCreator rc;
+            if (url != null && !url.isEmpty()) {
+                rc = Picasso.with(context).load(url);
+            } else {
+                rc = Picasso.with(context).load(R.drawable.profile);
+            }
+            rc.resize(IMG_SIZE, IMG_SIZE)
+                    .centerCrop()
+                    .into(view);
         }
     }
 }

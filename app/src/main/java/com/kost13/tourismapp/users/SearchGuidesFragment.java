@@ -22,16 +22,14 @@ public class SearchGuidesFragment extends Fragment {
     RecyclerView profilesView;
 
 
-    public SearchGuidesFragment() {
-        // Required empty public constructor
-    }
+    public SearchGuidesFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    private void search(String name) {
+    private void search(String name, String location) {
         Log.d("Search name", name);
 
         ProfilesAdapter profilesAdapter = new ProfilesAdapter();
@@ -47,23 +45,29 @@ public class SearchGuidesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        profilesView = (RecyclerView) view.findViewById(R.id.profilesRecyclerView);
+        profilesView = view.findViewById(R.id.profilesRecyclerView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         profilesView.setLayoutManager(layoutManager);
 
-        Button searchButton = (Button) view.findViewById(R.id.searchGuideButton);
-        EditText searchName = (EditText) view.findViewById(R.id.searchGuideName);
+        Button searchButton = view.findViewById(R.id.searchGuideButton);
+        EditText searchName = view.findViewById(R.id.searchGuideName);
+        EditText searchLocation = view.findViewById(R.id.searchGuideLocation);
 
-        searchButton.setOnClickListener(view1 -> search(searchName.getText().toString()));
+        searchButton.setOnClickListener(view1 -> search(searchName.getText().toString(), searchLocation.getText().toString()));
+
+        Button clearButton = view.findViewById(R.id.clearButton);
+        clearButton.setOnClickListener(view1 -> {
+            searchName.setText("");
+            searchLocation.setText("");
+            profilesView.setAdapter(new ProfilesAdapter());
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_search_guides, container, false);
-
-
     }
 }
