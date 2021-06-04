@@ -24,11 +24,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.kost13.tourismapp.R;
-import com.kost13.tourismapp.maps.RouteBasicData;
+import com.kost13.tourismapp.routes.RouteBasicData;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
 
 import java.util.HashMap;
 import java.util.Map;

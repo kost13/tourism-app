@@ -11,7 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -23,7 +25,6 @@
                 android:layout_height="149dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/profile" />
@@ -35,10 +36,9 @@
                 android:layout_marginTop="8dp"
                 android:text="Name"
                 android:textAlignment="viewStart"
-                android:textColor="@color/black"
+                android:textColor="@color/primary_text"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/profileImageView" />
 
@@ -46,13 +46,12 @@
                 android:id="@+id/locationsTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:text="Locaction"
                 android:textSize="18sp"
+                android:textColor="@color/primary_text"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/switchGuide" />
 
             <TextView
                 android:id="@+id/languagesTextView"
@@ -61,37 +60,41 @@
                 android:layout_marginTop="8dp"
                 android:text="Languages"
                 android:textAlignment="center"
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/profileBio"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/locationsTextView"
                 app:layout_constraintVertical_bias="0.153" />
 
+
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/switchGuide"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:checked="false"
+                android:checked="true"
                 android:text="Guide"
-                app:layout_constraintTop_toBottomOf="@+id/languagesTextView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.518"
-                app:layout_constraintStart_toStartOf="parent" />
-
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nameTextView"
+                app:thumbTint="@color/accent_color"
+                app:trackTint="@color/accent_color" />
 
             <EditText
                 android:id="@+id/profileBio"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
                 android:text="Bio"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/switchGuide"
-            />
+                app:layout_constraintTop_toBottomOf="@+id/locationsTextView" />
 
             <TextView
                 android:id="@+id/contacttextView"
@@ -101,15 +104,17 @@
                 android:layout_marginTop="16dp"
                 android:text="Contact"
                 android:textSize="24sp"
+                android:textColor="@color/primary_text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/profileBio" />
 
 
             <Button
                 android:id="@+id/uploadButton"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:backgroundTint="@color/dark_primary_color"
                 android:text="Upload"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/profileImageView"
@@ -117,9 +122,10 @@
 
             <Button
                 android:id="@+id/clearButton"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:backgroundTint="@color/dark_primary_color"
                 android:text="Clear"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/profileImageView"
@@ -143,7 +149,8 @@
                     android:layout_row="0"
                     android:layout_column="0"
                     android:padding="8dp"
-                    android:text="Telephone" />
+                    android:text="Telephone"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/emailLabel"
@@ -152,7 +159,8 @@
                     android:layout_row="1"
                     android:layout_column="0"
                     android:padding="8dp"
-                    android:text="E-mail" />
+                    android:text="E-mail"
+                    android:textSize="18sp" />
 
 
                 <TextView
@@ -162,7 +170,8 @@
                     android:layout_row="2"
                     android:layout_column="0"
                     android:padding="8dp"
-                    android:text="Webpage" />
+                    android:text="Webpage"
+                    android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/phoneValue"
@@ -172,7 +181,8 @@
                     android:layout_column="1"
                     android:inputType="phone"
                     android:padding="4dp"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/emailValue"
@@ -182,7 +192,8 @@
                     android:layout_column="1"
                     android:inputType="textEmailAddress"
                     android:padding="4dp"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/webpageValue"
@@ -191,7 +202,8 @@
                     android:layout_row="2"
                     android:layout_column="1"
                     android:padding="4dp"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textSize="18sp" />
 
             </GridLayout>
 
@@ -200,6 +212,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:backgroundTint="@color/dark_primary_color"
                 android:text="Save"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.185"
@@ -211,12 +224,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:backgroundTint="@color/dark_primary_color"
                 android:text="Cancel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/saveButton"
                 app:layout_constraintTop_toBottomOf="@+id/contactLayout" />
-
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

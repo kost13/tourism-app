@@ -1,4 +1,4 @@
-package com.kost13.tourismapp.maps;
+package com.kost13.tourismapp.routes;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -79,8 +79,8 @@ public class BuildRouteMapFragment extends Fragment {
 
             if(routeMapViewModel.getPoints().isEmpty()) {
                 LatLng warsaw = new LatLng(52.22987, 21.01199);
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(warsaw));
                 googleMap.moveCamera(CameraUpdateFactory.zoomTo(12.0f));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(warsaw));
             } else {
                 LatLngBounds bounds = routeMapViewModel.getRouteBounds();
                 if (bounds != null) {
@@ -197,8 +197,9 @@ public class BuildRouteMapFragment extends Fragment {
     }
 
     private void onDone(View view) {
+        Toast.makeText(getContext(), "Saving route...", Toast.LENGTH_LONG).show();
         routeMapViewModel.commitRouteToDatabase(() -> {
-            Toast.makeText(getContext(), "Route added", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Route added", Toast.LENGTH_SHORT).show();
             ((AppCompatActivity) getContext()).getSupportFragmentManager().popBackStack(R.id.FirstFragment, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             NavHostFragment.findNavController(BuildRouteMapFragment.this).navigate(R.id.action_BuildRouteMapFragment_to_FirstFragment);
         });

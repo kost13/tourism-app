@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_PlacesFragment"
             app:destination="@id/PlacesFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_MainMap"
+            app:destination="@id/MainMap" />
     </fragment>
     <fragment
         android:id="@+id/SearchGuidesFragment"
@@ -40,7 +43,7 @@
     </fragment>
     <fragment
         android:id="@+id/MapFragment"
-        android:name="com.kost13.tourismapp.maps.MapsFragment"
+        android:name="com.kost13.tourismapp.routes.MapsFragment"
         android:label="MapFragment"
         tools:layout="@layout/fragment_maps">
     </fragment>
@@ -58,7 +61,7 @@
     </fragment>
     <fragment
         android:id="@+id/CreateRouteFragment"
-        android:name="com.kost13.tourismapp.maps.CreateRouteFragment"
+        android:name="com.kost13.tourismapp.routes.CreateRouteFragment"
         android:label="CreateRouteFragment"
         tools:layout="@layout/fragment_create_route">
         <action
@@ -67,13 +70,13 @@
     </fragment>
     <fragment
         android:id="@+id/CreateRoutePoiFragment"
-        android:name="com.kost13.tourismapp.maps.CreateRoutePoiFragment"
+        android:name="com.kost13.tourismapp.routes.CreateRoutePoiFragment"
         android:label="CreateRoutePoiFragment"
         tools:layout="@layout/fragment_create_route_poi">
     </fragment>
     <fragment
         android:id="@+id/BuildRouteMapFragment"
-        android:name="com.kost13.tourismapp.maps.BuildRouteMapFragment"
+        android:name="com.kost13.tourismapp.routes.BuildRouteMapFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_build_route_map">
         <action
@@ -109,6 +112,12 @@
         android:name="com.kost13.tourismapp.places.CreatePlaceFragment"
         android:label="CreatePlaceFragment"
         tools:layout="@layout/fragment_create_place">
+    </fragment>
+    <fragment
+        android:id="@+id/MainMap"
+        android:name="com.kost13.tourismapp.map.MainMap"
+        android:label="MainMap"
+        tools:layout="@layout/fragment_main_map">
     </fragment>
     <action android:id="@+id/action_global_ProfileFragment" app:destination="@id/ProfileFragment" />
 </navigation>

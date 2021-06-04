@@ -6,7 +6,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.kost13.tourismapp.Auth;
 import com.kost13.tourismapp.Database;
 import com.kost13.tourismapp.OnDataReadyCallback;
-import com.kost13.tourismapp.maps.RouteBasicData;
+import com.kost13.tourismapp.routes.RouteBasicData;
 
 
 public class PlacesViewModel extends ViewModel {

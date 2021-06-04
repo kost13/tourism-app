@@ -17,15 +17,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.kost13.tourismapp.R;
-import com.kost13.tourismapp.maps.BuildRouteMapFragment;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 

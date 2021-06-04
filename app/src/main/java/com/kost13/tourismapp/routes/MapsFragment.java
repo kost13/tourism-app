@@ -1,4 +1,4 @@
-package com.kost13.tourismapp.maps;
+package com.kost13.tourismapp.routes;
 
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -61,7 +61,7 @@ public class MapsFragment extends Fragment {
                 } else {
                     routeId = "jRP5OOxRLrr51zQxcGen";
                 }
-                Log.d("maps fragmnet", "routeId " + routeId);
+                Log.d("routes fragmnet", "routeId " + routeId);
             }
         } else {
             routeId = "jRP5OOxRLrr51zQxcGen";

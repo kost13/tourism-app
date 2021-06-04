@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".maps.CreateRouteFragment">
+    tools:context=".routes.CreateRouteFragment">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/routeDataSetupFragment"
@@ -24,6 +24,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="Continue"
+        app:backgroundTint="@color/dark_primary_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

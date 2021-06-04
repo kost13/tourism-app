@@ -1,4 +1,4 @@
-package com.kost13.tourismapp.maps;
+package com.kost13.tourismapp.routes;
 
 import android.os.Bundle;
 

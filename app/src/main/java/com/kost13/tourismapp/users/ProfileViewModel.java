@@ -7,8 +7,7 @@ import androidx.lifecycle.ViewModel;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.kost13.tourismapp.Database;
 import com.kost13.tourismapp.OnDataReadyCallback;
-import com.kost13.tourismapp.maps.Route;
-import com.kost13.tourismapp.users.User;
+import com.kost13.tourismapp.routes.Route;
 
 import java.util.ArrayList;
 import java.util.List;

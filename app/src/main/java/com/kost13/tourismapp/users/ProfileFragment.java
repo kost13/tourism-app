@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,12 +20,9 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.kost13.tourismapp.Auth;
 import com.kost13.tourismapp.R;
-import com.kost13.tourismapp.maps.Route;
-import com.kost13.tourismapp.maps.RouteMapViewModel;
+import com.kost13.tourismapp.routes.Route;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 

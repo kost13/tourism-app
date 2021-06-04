@@ -1,4 +1,4 @@
-package com.kost13.tourismapp.maps;
+package com.kost13.tourismapp.routes;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,7 +18,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.kost13.tourismapp.R;
-import com.kost13.tourismapp.maps.RouteBasicData;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 

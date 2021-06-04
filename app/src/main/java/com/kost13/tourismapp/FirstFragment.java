@@ -16,9 +16,6 @@ public class FirstFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-
-
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
@@ -30,7 +27,7 @@ public class FirstFragment extends Fragment {
                 .navigate(R.id.action_FirstFragment_to_SearchGuidesFragment));
 
         view.findViewById(R.id.mapsButton).setOnClickListener(view12 -> NavHostFragment.findNavController(FirstFragment.this)
-                .navigate(R.id.action_FirstFragment_to_MapFragment));
+                .navigate(R.id.action_FirstFragment_to_MainMap));
 
         view.findViewById(R.id.routeButton).setOnClickListener(view1 -> NavHostFragment.findNavController(FirstFragment.this)
                 .navigate(R.id.action_FirstFragment_to_CreateRouteFragment));

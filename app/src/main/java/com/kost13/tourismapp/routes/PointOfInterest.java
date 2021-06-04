@@ -1,11 +1,9 @@
-package com.kost13.tourismapp.maps;
+package com.kost13.tourismapp.routes;
 
 import android.net.Uri;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.GeoPoint;
-
-import java.io.Serializable;
 
 public class PointOfInterest {
     private String description;

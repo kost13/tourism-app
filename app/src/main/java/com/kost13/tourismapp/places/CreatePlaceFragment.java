@@ -15,16 +15,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.kost13.tourismapp.R;
-import com.kost13.tourismapp.maps.RouteBasicData;
-import com.kost13.tourismapp.maps.RouteDataSetupFragment;
-import com.kost13.tourismapp.maps.RouteMapViewModel;
-import com.kost13.tourismapp.users.ProfileEditFragment;
+import com.kost13.tourismapp.routes.RouteBasicData;
+import com.kost13.tourismapp.routes.RouteDataSetupFragment;
 
 public class CreatePlaceFragment extends Fragment {
 
-    public CreatePlaceFragment() {
-        // Required empty public constructor
-    }
+    public CreatePlaceFragment() {}
 
 
     @Override
@@ -35,7 +31,6 @@ public class CreatePlaceFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_create_place, container, false);
     }
 
@@ -52,6 +47,7 @@ public class CreatePlaceFragment extends Fragment {
     }
 
     private void saveRoute(View view){
+        Toast.makeText(getContext(), "Saving place...", Toast.LENGTH_LONG).show();
         PlacesViewModel placesViewModel = new ViewModelProvider(requireActivity()).get(PlacesViewModel.class);
         placesViewModel.setBasicData(getPlaceInfo());
         placesViewModel.commitPlaceToDatabase(() -> {

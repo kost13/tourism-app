@@ -20,17 +20,27 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textViewTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="4dp"
-        android:paddingTop="4dp"
-        android:text="Title"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+            <TextView
+                android:id="@+id/textViewTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:text="Title"
+                android:textColor="@color/primary_text"
+                android:textSize="18sp" />
 
-    <ImageView
+            <TextView
+                android:id="@+id/textViewAuthor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:textColor="@color/accent_color"
+                android:visibility="gone"
+                android:paddingTop="8dp"
+                android:text="Author" />
+
+            <ImageView
         android:id="@+id/imageViewPlace"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,8 +61,8 @@
         android:id="@+id/buttonClose"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/purple_500"
-        android:backgroundTint="@color/purple_500"
+        app:backgroundTint="@color/dark_primary_color"
+        android:background="@color/dark_primary_color"
         android:text="Close"
         app:shapeAppearance="@style/FirebaseUI.Button" />
 

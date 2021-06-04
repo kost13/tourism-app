@@ -1,11 +1,10 @@
-package com.kost13.tourismapp.maps;
+package com.kost13.tourismapp.routes;
 
 import android.net.Uri;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.common.collect.Lists;
 import com.google.maps.android.SphericalUtil;
-import com.kost13.tourismapp.maps.Point;
 
 import java.util.List;
 
