@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.kost13.tourismapp.R;
@@ -20,8 +21,9 @@ import com.kost13.tourismapp.routes.RouteDataSetupFragment;
 
 public class CreatePlaceFragment extends Fragment {
 
-    public CreatePlaceFragment() {}
+    private View currentView;
 
+    public CreatePlaceFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,12 +46,15 @@ public class CreatePlaceFragment extends Fragment {
 
         Button cancelButton = view.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(this::cancel);
+
+        currentView = view;
     }
 
     private void saveRoute(View view){
         Toast.makeText(getContext(), "Saving place...", Toast.LENGTH_LONG).show();
         PlacesViewModel placesViewModel = new ViewModelProvider(requireActivity()).get(PlacesViewModel.class);
         placesViewModel.setBasicData(getPlaceInfo());
+        placesViewModel.setPublicVisiblity(getPublicVisibility());
         placesViewModel.commitPlaceToDatabase(() -> {
             Toast.makeText(getContext(), "Place added", Toast.LENGTH_SHORT).show();
             close(view);
@@ -70,5 +75,10 @@ public class CreatePlaceFragment extends Fragment {
     private RouteBasicData getPlaceInfo(){
         RouteDataSetupFragment fragment = (RouteDataSetupFragment) getChildFragmentManager().findFragmentById(R.id.routeDataSetupFragment);
         return fragment.getData();
+    }
+
+    private boolean getPublicVisibility(){
+        RadioButton rbPublic = currentView.findViewById(R.id.radioButtonPublic);
+        return rbPublic.isChecked();
     }
 }

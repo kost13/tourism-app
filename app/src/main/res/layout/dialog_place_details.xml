@@ -36,7 +36,6 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="8dp"
                 android:textColor="@color/accent_color"
-                android:visibility="gone"
                 android:paddingTop="8dp"
                 android:text="Author" />
 

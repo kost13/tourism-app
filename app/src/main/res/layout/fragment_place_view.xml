@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="34sp"
+        android:layout_height="52sp"
         android:paddingHorizontal="5sp">
 
         <TextView
@@ -39,6 +39,31 @@
             android:tint="@color/accent_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/button_share"
+            style="@style/Widget.AppCompat.ImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:src="@android:drawable/ic_menu_share"
+            android:tint="@color/accent_color"
+            app:layout_constraintEnd_toStartOf="@id/button_close"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="8dp"
+            android:textSize="16sp"
+            android:textColor="@color/accent_color"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/placeTitle"
+            android:text="Author" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

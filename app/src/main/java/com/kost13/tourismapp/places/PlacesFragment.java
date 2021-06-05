@@ -35,7 +35,7 @@ public class PlacesFragment extends Fragment {
 
     private GoogleMap map;
     private View view;
-    private Map<Marker, RouteBasicData> placesMap;
+    private Map<Marker, Place> placesMap;
 
     private OnMapReadyCallback callback = (GoogleMap googleMap) -> {
 
@@ -55,7 +55,7 @@ public class PlacesFragment extends Fragment {
     }
 
     private boolean onMarkerClicked(Marker marker) {
-        RouteBasicData data = placesMap.getOrDefault(marker, null);
+        Place data = placesMap.getOrDefault(marker, null);
         if (data == null) {
             return false;
         }
@@ -69,7 +69,10 @@ public class PlacesFragment extends Fragment {
         descView.setText(data.getDescription());
 
         ImageView img = layoutView.findViewById(R.id.imageViewPlace);
-        addPlaceImage(img, data.getImageUri());
+        addPlaceImage(img, data.getImage());
+
+        TextView author = layoutView.findViewById(R.id.textViewAuthor);
+        author.setText(data.getUserId());
 
         Button closeButton = layoutView.findViewById(R.id.buttonClose);
         dialogBuilder.setView(layoutView);
@@ -80,7 +83,7 @@ public class PlacesFragment extends Fragment {
         return true;
     }
 
-    private void addPlaceImage(ImageView view, Uri img) {
+    private void addPlaceImage(ImageView view, String img) {
         int width = Resources.getSystem().getDisplayMetrics().widthPixels;
 
         if (img != null) {
@@ -98,12 +101,12 @@ public class PlacesFragment extends Fragment {
         LatLng pos = placesViewModel.getPosition();
         if (pos != null) {
             MarkerOptions markerOptions = new MarkerOptions().position(pos);
-            RouteBasicData data = placesViewModel.getBasicData();
-            if (data != null) {
-                markerOptions = markerOptions.title(data.getTitle());
+             Place place = placesViewModel.getPlace();
+            if (place != null) {
+                markerOptions = markerOptions.title(place.getTitle());
             }
             Marker marker = map.addMarker(markerOptions);
-            placesMap.put(marker, data);
+            placesMap.put(marker, place);
         }
     }
 

@@ -17,6 +17,7 @@ public class PlacesViewModel extends ViewModel {
     private RouteBasicData basicData;
     private LatLng position;
     private String placeId;
+    private boolean publicVisiblity;
     private Place place;
 
      public PlacesViewModel(){}
@@ -40,6 +41,7 @@ public class PlacesViewModel extends ViewModel {
             place.setImage(imgPath);
             place.setLatLng(position);
             Database.getPlacesDb().add(place).addOnCompleteListener(task -> {
+                place.setId(task.getResult().getId());
                 callback.onDataReady();
             });
         });
@@ -66,5 +68,13 @@ public class PlacesViewModel extends ViewModel {
                 Log.d("firebase", "Error getting documents: ", task.getException());
             }
         });
+    }
+
+    public boolean getPublicVisiblity() {
+        return publicVisiblity;
+    }
+
+    public void setPublicVisiblity(boolean publicVisiblity) {
+        this.publicVisiblity = publicVisiblity;
     }
 }

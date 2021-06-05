@@ -13,6 +13,7 @@ public class Place {
     private String id;
     private Uri imageUri;
     private GeoPoint loc;
+    private boolean publicVisibility;
 
     public Place(){}
 
@@ -74,5 +75,13 @@ public class Place {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public boolean getPublicVisibility() {
+        return publicVisibility;
+    }
+
+    public void setPublicVisibility(boolean publicVisibility) {
+        this.publicVisibility = publicVisibility;
     }
 }

@@ -11,10 +11,47 @@
         android:name="com.kost13.tourismapp.routes.RouteDataSetupFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSave"
+        app:layout_constraintBottom_toTopOf="@+id/visibilityGroup"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+
+
+    </androidx.fragment.app.FragmentContainerView>
+
+    <RadioGroup
+        android:id="@+id/visibilityGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/buttonSave">
+
+    <RadioButton
+        android:id="@+id/radioButtonPrivate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_bias="0.21"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:buttonTint="@color/accent_color"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="Private" />
+
+    <RadioButton
+        android:id="@+id/radioButtonPublic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:buttonTint="@color/accent_color"
+        android:checked="true"
+        android:text="Public"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/radioButtonPrivate" />
+
+    </RadioGroup>
 
     <Button
         android:id="@+id/buttonSave"
@@ -43,5 +80,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toEndOf="@+id/buttonSave" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
