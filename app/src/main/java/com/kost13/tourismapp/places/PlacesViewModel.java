@@ -19,9 +19,9 @@ public class PlacesViewModel extends ViewModel {
     private String placeId;
     private Place place;
 
-     PlacesViewModel(){}
+     public PlacesViewModel(){}
 
-     PlacesViewModel(String placeId){
+    public PlacesViewModel(String placeId){
          this.placeId = placeId;
      }
 

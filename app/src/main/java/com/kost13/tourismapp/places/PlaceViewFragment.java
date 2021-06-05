@@ -16,13 +16,11 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.kost13.tourismapp.R;
 import com.kost13.tourismapp.Utils;
-import com.kost13.tourismapp.routes.MapsFragment;
 import com.squareup.picasso.Picasso;
 
 public class PlaceViewFragment extends Fragment {
@@ -41,10 +39,14 @@ public class PlaceViewFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            placeId = getArguments().getString("placeId");
-            viewModel = new PlacesViewModel(placeId);
-            viewModel.downloadPlace(this::setupView);
+            setup(getArguments().getString("placeId"));
         }
+    }
+
+    public void setup(String placeId) {
+        this.placeId = placeId;
+        viewModel = new PlacesViewModel(placeId);
+        viewModel.downloadPlace(this::setupView);
     }
 
     @Override
@@ -72,17 +74,21 @@ public class PlaceViewFragment extends Fragment {
         setupView();
     }
 
-    private void close(View v){
-        NavHostFragment.findNavController(PlaceViewFragment.this).popBackStack();
+    private void close(View v) {
+        try {
+            NavHostFragment.findNavController(PlaceViewFragment.this).popBackStack();
+        } catch (IllegalStateException e){
+            System.exit(0);
+        }
     }
 
-    private void setupView(){
-        if(currentView == null){
+    private void setupView() {
+        if (currentView == null) {
             return;
         }
 
         Place place = viewModel.getPlace();
-        if(place == null){
+        if (place == null) {
             return;
         }
 
@@ -116,9 +122,9 @@ public class PlaceViewFragment extends Fragment {
         }
     }
 
-    private void tryAddMarker(){
+    private void tryAddMarker() {
         Place place = viewModel.getPlace();
-        if(place == null  || map == null){
+        if (place == null || map == null) {
             return;
         }
 
