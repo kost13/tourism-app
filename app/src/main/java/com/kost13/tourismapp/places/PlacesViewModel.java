@@ -41,6 +41,7 @@ public class PlacesViewModel extends ViewModel {
             place.setTitle(basicData.getTitle());
             place.setDescription(basicData.getDescription());
             place.setUserId(Auth.getCurrentUser());
+            place.setPublicVisibility(publicVisiblity);
             place.setImage(imgPath);
             place.setLatLng(position);
             Database.getPlacesDb().add(place).addOnCompleteListener(task -> {
@@ -79,15 +80,13 @@ public class PlacesViewModel extends ViewModel {
         if(place == null){
             return;
         }
-        Database.getUsersDb().child(place.getUserId()).get().addOnCompleteListener(task -> {
+        Database.getUsersDb().document(place.getUserId()).get().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
                 Log.e("firebase", "Error getting data", task.getException());
             } else {
-                Log.d("firebase", String.valueOf(task.getResult().getValue()));
-
-                user = task.getResult().getValue(User.class);
-                if (user != null) {
-                    user.setId(task.getResult().getKey());
+                setUser(task.getResult().toObject(User.class));
+                if (getUser() != null) {
+                    getUser().setId(task.getResult().getId());
                     callback.onDataReady();
                 }
             }
@@ -103,10 +102,17 @@ public class PlacesViewModel extends ViewModel {
     }
 
     public String getUserName() {
-        if(user != null){
-            return user.getName();
+        if(getUser() != null){
+            return getUser().getName();
         }
         return "";
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

@@ -64,6 +64,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/routeLengthTextView" />
 
+    <ImageView
+        android:id="@+id/imageViewLock"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/titleTextView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_iconfinder_309054_lock_privacy_private_protect_icon" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView

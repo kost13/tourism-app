@@ -45,7 +45,6 @@ public class MapsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mapsViewModel = new MapsViewModel();
         routeDetailsVisible = true;
-        // TODO pass to fragment
 
         if (getArguments() != null) {
             String preview = getArguments().getString("preview");
@@ -58,13 +57,8 @@ public class MapsFragment extends Fragment {
                 String route = getArguments().getString("routeId");
                 if(route != null){
                     routeId = route;
-                } else {
-                    routeId = "jRP5OOxRLrr51zQxcGen";
                 }
-                Log.d("routes fragmnet", "routeId " + routeId);
             }
-        } else {
-            routeId = "jRP5OOxRLrr51zQxcGen";
         }
     }
 

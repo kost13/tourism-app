@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.firestore.GeoPoint;
 import com.kost13.tourismapp.R;
 import com.kost13.tourismapp.Utils;
+import com.kost13.tourismapp.users.ProfileEditFragment;
 
 import java.util.List;
 
@@ -150,9 +151,7 @@ public class BuildRouteMapFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            routeBasicData = (RouteBasicData) getArguments().getSerializable("routeData");
-//        }
+
         routeMapViewModel = new ViewModelProvider(requireActivity()).get(RouteMapViewModel.class);
     }
 
@@ -167,10 +166,12 @@ public class BuildRouteMapFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(callback);
+        if(map == null){
+            SupportMapFragment mapFragment =
+                    (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+            if (mapFragment != null) {
+                mapFragment.getMapAsync(callback);
+            }
         }
 
         this.view = view;
@@ -185,9 +186,19 @@ public class BuildRouteMapFragment extends Fragment {
         done.setOnClickListener(this::onDone);
 
         textViewLength = view.findViewById(R.id.textViewLength);
-        textViewLength.setText("0 km");
+//        textViewLength.setText("0 km");
         textViewPOIs = view.findViewById(R.id.textViewPOIs);
-        textViewPOIs.setText("0 POIs");
+//        textViewPOIs.setText("0 POIs");
+
+        final List<PointOfInterest> pois = routeMapViewModel.getPois();
+        if(!pois.isEmpty() && map != null){
+            PointOfInterest last = pois.get(pois.size()-1);
+            if(last != null){
+                map.addMarker(new MarkerOptions().position(last.getLatLng()).title(last.getTitle()));
+            }
+        }
+        updateRouteLength();
+        updatePointsOfInterestCount();
     }
 
     private void onPreviewClicked(View view) {
@@ -200,35 +211,34 @@ public class BuildRouteMapFragment extends Fragment {
         Toast.makeText(getContext(), "Saving route...", Toast.LENGTH_LONG).show();
         routeMapViewModel.commitRouteToDatabase(() -> {
             Toast.makeText(getContext(), "Route added", Toast.LENGTH_SHORT).show();
-            ((AppCompatActivity) getContext()).getSupportFragmentManager().popBackStack(R.id.FirstFragment, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            NavHostFragment.findNavController(BuildRouteMapFragment.this).navigate(R.id.action_BuildRouteMapFragment_to_FirstFragment);
+            NavHostFragment.findNavController(BuildRouteMapFragment.this).popBackStack(R.id.FirstFragment, false);
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        final List<PointOfInterest> pois = routeMapViewModel.getPois();
-        if(!pois.isEmpty()){
-            if(map != null){
-                PointOfInterest last = pois.get(pois.size()-1);
-                if(last != null){
-                    map.addMarker(new MarkerOptions().position(last.getLatLng()).title(last.getTitle()));
-                }
-            } else {
-                SupportMapFragment mapFragment =
-                        (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-                if (mapFragment != null) {
-                    mapFragment.getMapAsync((GoogleMap map) -> {
-                        callback.onMapReady(map);
-                        for(PointOfInterest p : pois){
-                            map.addMarker(new MarkerOptions().position(p.getLatLng()).title(p.getTitle()));
-                        }
-                    });
-                }
-            }
-        }
-        updateRouteLength();
-        updatePointsOfInterestCount();
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        final List<PointOfInterest> pois = routeMapViewModel.getPois();
+//        if(!pois.isEmpty()){
+//            if(map != null){
+//                PointOfInterest last = pois.get(pois.size()-1);
+//                if(last != null){
+//                    map.addMarker(new MarkerOptions().position(last.getLatLng()).title(last.getTitle()));
+//                }
+//            } else {
+//                SupportMapFragment mapFragment =
+//                        (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+//                if (mapFragment != null) {
+//                    mapFragment.getMapAsync((GoogleMap map) -> {
+//                        callback.onMapReady(map);
+//                        for(PointOfInterest p : pois){
+//                            map.addMarker(new MarkerOptions().position(p.getLatLng()).title(p.getTitle()));
+//                        }
+//                    });
+//                }
+//            }
+//        }
+//        updateRouteLength();
+//        updatePointsOfInterestCount();
+//    }
 }

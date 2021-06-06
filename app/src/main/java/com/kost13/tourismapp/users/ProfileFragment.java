@@ -26,11 +26,14 @@ import com.kost13.tourismapp.routes.Route;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class ProfileFragment extends Fragment {
 
     private static final int MAX_DESC_LEN = 100;
+    public static final String USER_ID = "userId";
     boolean editEnabled;
     private ProfileViewModel viewModel;
     private View currentView;
@@ -45,7 +48,7 @@ public class ProfileFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
 
         if (getArguments() != null) {
-            String userId = getArguments().getString("userId");
+            String userId = getArguments().getString(USER_ID);
             Log.d("profile fragmnet", "userID " + userId);
 
             editEnabled = userId.equals(Auth.getCurrentUser());
@@ -114,7 +117,7 @@ public class ProfileFragment extends Fragment {
             return;
         }
 
-        LinearLayout layout = (LinearLayout) currentView.findViewById(R.id.routesProfileLayout);
+        LinearLayout layout = currentView.findViewById(R.id.routesProfileLayout);
 
         if(layout.getChildCount() > 0){
             return;
@@ -137,6 +140,11 @@ public class ProfileFragment extends Fragment {
 
         TextView pois = view.findViewById(R.id.routePoisTextView);
         pois.setVisibility(View.GONE);
+
+        if(!place.getPublicVisibility()){
+            ImageView lock = view.findViewById(R.id.imageViewLock);
+            lock.setVisibility(View.VISIBLE);
+        }
 
         TextView description = view.findViewById(R.id.routeDescriptionTextView);
         description.setText(chopString(place.getDescription()));
@@ -214,7 +222,18 @@ public class ProfileFragment extends Fragment {
             return;
         }
 
-        ImageView editProfile = (ImageView) currentView.findViewById(R.id.editProfile);
+        LinearLayout layout = currentView.findViewById(R.id.routesProfileLayout);
+        TextView routesTitle = currentView.findViewById(R.id.tourRoutes);
+
+        if(user.getIsGuide()){
+            layout.setVisibility(View.VISIBLE);
+            routesTitle.setVisibility(View.VISIBLE);
+        } else {
+            layout.setVisibility(View.GONE);
+            routesTitle.setVisibility(View.GONE);
+        }
+
+        ImageView editProfile = currentView.findViewById(R.id.editProfile);
         editProfile.setVisibility(editEnabled ? View.VISIBLE : View.INVISIBLE);
 
         TextView nameView = currentView.findViewById(R.id.nameTextView);
@@ -223,8 +242,8 @@ public class ProfileFragment extends Fragment {
         TextView bioView = currentView.findViewById(R.id.profileBio);
         bioView.setText(user.getBio());
 
-        TextView languages = currentView.findViewById(R.id.languagesTextView);
-        languages.setText(String.join(", ", user.getLanguages()));
+//        TextView languages = currentView.findViewById(R.id.languagesTextView);
+//        languages.setText(String.join(", ", user.getLanguages()));
 
         TextView locations = currentView.findViewById(R.id.locationsTextView);
         locations.setText(user.getLocation());

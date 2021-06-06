@@ -89,9 +89,6 @@ public class ProfileEditFragment extends Fragment {
         EditText bioView = currentView.findViewById(R.id.profileBio);
         bioView.setText(user.getBio());
 
-        TextView languages = currentView.findViewById(R.id.languagesTextView);
-        languages.setText(String.join(", ", user.getLanguages()));
-
         EditText locations = currentView.findViewById(R.id.locationsTextView);
         locations.setText(user.getLocation());
 
@@ -117,8 +114,6 @@ public class ProfileEditFragment extends Fragment {
 
         EditText bioView = currentView.findViewById(R.id.profileBio);
         user.setBio(bioView.getText().toString());
-
-//        TextView languages = currentView.findViewById(R.id.languagesTextView);
 
         EditText locations = currentView.findViewById(R.id.locationsTextView);
         user.setLocation(locations.getText().toString());

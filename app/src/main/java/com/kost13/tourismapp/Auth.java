@@ -1,9 +1,16 @@
 package com.kost13.tourismapp;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.kost13.tourismapp.users.User;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,12 +19,14 @@ public class Auth {
     private static final int RC_SIGN_IN = 123;
     private static FirebaseAuth firebaseAuth;
     private static FirebaseAuth.AuthStateListener firebaseAuthListener;
+    private static User user;
 
     private static void signIn(AppCompatActivity caller) {
         // Choose authentication providers
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build());
+        user = null;
 
         // Create and launch sign-in intent
         caller.startActivityForResult(
@@ -45,6 +54,28 @@ public class Auth {
 
     public static String getCurrentUser() {
         return firebaseAuth.getUid();
+    }
+
+    public static User getCurrentUserObject() {
+        return user;
+    }
+
+
+    public static void downloadUser(OnDataReadyCallback callback) {
+        if(user != null){
+            callback.onDataReady();
+        }
+        Database.getUsersDb().document(getCurrentUser()).get().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.e("firebase", "Error getting data", task.getException());
+            } else {
+                user = task.getResult().toObject(User.class);
+                if (user != null) {
+                    user.setId(getCurrentUser());
+                    callback.onDataReady();
+                }
+            }
+        });
     }
 
 

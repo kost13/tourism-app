@@ -1,15 +1,21 @@
 package com.kost13.tourismapp;
 
 import android.net.Uri;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.kost13.tourismapp.users.User;
 
 public class Database {
 
@@ -21,7 +27,7 @@ public class Database {
     private static final String STORAGE_PROFILE = "profile_images";
     private static final String STORAGE_ROUTES = "route_images";
     private static final String STORAGE_PLACES = "place_images";
-
+    private static final int MAX_USERS = 50;
     private static FirebaseDatabase firebaseDatabase;
     private static FirebaseFirestore firestore;
     private static StorageReference storage;
@@ -41,8 +47,8 @@ public class Database {
         return firestore.collection(reference);
     }
 
-    public static DatabaseReference getUsersDb() {
-        return openDatabaseReference(DB_USERS);
+    public static CollectionReference getUsersDb() {
+        return openFirestoreReference(DB_USERS);
     }
 
     public static CollectionReference getRoutesDb() {
@@ -57,14 +63,9 @@ public class Database {
         return openFirestoreReference(DB_ROUTE_POIS);
     }
 
-    public static Query findUserByName(String name) {
-        name = name.trim();
-        if (name.isEmpty()) {
-            // all users
-            return getUsersDb();
-        }
-        return getUsersDb().orderByChild("name").startAt(name).endAt(name + "\uf8ff");
-
+    public static Task<QuerySnapshot> findUsers(String value, String key) {
+        value = value.trim();
+        return getUsersDb().whereGreaterThanOrEqualTo(key, value).whereLessThanOrEqualTo(key, value + "\uf8ff").limit(MAX_USERS).get();
     }
 
     private static StorageReference getStorage(String folderName) {
@@ -73,14 +74,6 @@ public class Database {
         }
         return storage.child(folderName);
     }
-
-//    public static StorageReference getRouteImageStorage() {
-//        return getStorage(STORAGE_ROUTES);
-//    }
-//
-//    public static StorageReference getProfileImageStorage() {
-//        return getStorage(STORAGE_PROFILE);
-//    }
 
     public static void saveRouteImage(Uri image, ImageSavedCallback callback) {
         saveImage(image, callback, STORAGE_ROUTES);
@@ -113,4 +106,5 @@ public class Database {
             }
         });
     }
+
 }

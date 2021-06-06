@@ -24,8 +24,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.kost13.tourismapp.Auth;
 import com.kost13.tourismapp.R;
 import com.kost13.tourismapp.routes.RouteBasicData;
+import com.kost13.tourismapp.users.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -72,7 +74,12 @@ public class PlacesFragment extends Fragment {
         addPlaceImage(img, data.getImage());
 
         TextView author = layoutView.findViewById(R.id.textViewAuthor);
-        author.setText(data.getUserId());
+        User user = Auth.getCurrentUserObject();
+        if(user != null){
+            author.setText(user.getName());
+        } else {
+            author.setVisibility(View.GONE);
+        }
 
         Button closeButton = layoutView.findViewById(R.id.buttonClose);
         dialogBuilder.setView(layoutView);

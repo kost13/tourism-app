@@ -15,20 +15,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.kost13.tourismapp.Database;
 import com.kost13.tourismapp.ItemSelectedCallback;
 import com.kost13.tourismapp.R;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
 public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesAdapter.ProfileViewHolder> {
 
     private final ArrayList<User> users;
-    ChildEventListener childListener;
-    Query query;
+    Task<QuerySnapshot> query;
     ItemSelectedCallback userClickedCallback;
 
     public ProfilesAdapter() {
@@ -36,54 +41,34 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesAdapter.Profil
 
     }
 
-    public void search(String name) {
+    public void search(String value, String key, boolean guidesOnly) {
         clear();
-        childListener = createChildEventListener();
-        query = Database.findUserByName(name);
-        query.addChildEventListener(childListener);
+        query = Database.findUsers(value, key);
+        query.addOnCompleteListener(task -> {
+            if(!task.isSuccessful()){
+                return;
+            }
+            users.clear();
+            for (QueryDocumentSnapshot document : task.getResult()) {
+                User user = document.toObject(User.class);
+                user.setId(document.getId());
+                if(!guidesOnly || user.getIsGuide()){
+                    users.add(user);
+                }
+//                notifyItemInserted(users.size() - 1);
+            }
+            notifyItemRangeInserted(0, users.size());
+        });
     }
 
     public void addOnUserClickListener(ItemSelectedCallback callback) {
         userClickedCallback = callback;
     }
 
-    private ChildEventListener createChildEventListener() {
-        return new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                User user = snapshot.getValue(User.class);
-                user.setId(snapshot.getKey());
-                users.add(user);
-                notifyItemInserted(users.size() - 1);
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-    }
-
-    private void clear() {
-        if (childListener != null && query != null) {
-            query.removeEventListener(childListener);
-        }
+    public void clear() {
+        int s = users.size();
         users.clear();
+        notifyItemRangeRemoved(0, s);
     }
 
 
