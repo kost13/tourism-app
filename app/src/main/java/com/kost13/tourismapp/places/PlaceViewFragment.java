@@ -1,5 +1,6 @@
 package com.kost13.tourismapp.places;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,6 +24,8 @@ import com.kost13.tourismapp.R;
 import com.kost13.tourismapp.Utils;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 public class PlaceViewFragment extends Fragment {
 
 
@@ -30,6 +33,8 @@ public class PlaceViewFragment extends Fragment {
     private PlacesViewModel viewModel;
     private View currentView;
     private GoogleMap map;
+
+    public static final String PLACE_ID = "placeId";
 
     public PlaceViewFragment() {
     }
@@ -39,14 +44,17 @@ public class PlaceViewFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            setup(getArguments().getString("placeId"));
+            setup(getArguments().getString(PLACE_ID));
         }
     }
 
     public void setup(String placeId) {
         this.placeId = placeId;
         viewModel = new PlacesViewModel(placeId);
-        viewModel.downloadPlace(this::setupView);
+        viewModel.downloadPlace(() -> {
+            viewModel.downloadUser(this::setupView);
+        }
+        );
     }
 
     @Override
@@ -98,6 +106,9 @@ public class PlaceViewFragment extends Fragment {
         TextView description = currentView.findViewById(R.id.routeDescription);
         description.setText(place.getDescription());
 
+        TextView author = currentView.findViewById(R.id.textViewAuthor);
+        author.setText(viewModel.getUserName());
+
         ImageView img = currentView.findViewById(R.id.routeImageView);
         if (place.getImage() != null && !place.getImage().isEmpty()) {
             setPlaceImage(img, place.getImage());
@@ -105,8 +116,20 @@ public class PlaceViewFragment extends Fragment {
             img.setVisibility(View.GONE);
         }
 
+        ImageButton shareBtn = currentView.findViewById(R.id.button_share);
+        shareBtn.setOnClickListener(this::share);
+
         tryAddMarker();
 
+    }
+
+    private void share(View v){
+        String url = Utils.sharePath(viewModel.getPlace().getId());
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+        intent.putExtra(Intent.EXTRA_TEXT, url);
+        startActivity(Intent.createChooser(intent, "Share this place"));
     }
 
     private void setPlaceImage(ImageView view, String url) {

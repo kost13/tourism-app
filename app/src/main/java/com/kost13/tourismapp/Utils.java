@@ -7,7 +7,7 @@ import com.google.maps.android.SphericalUtil;
 import java.util.List;
 
 public class Utils {
-    static public double routeLength(List<LatLng> points){
+    static public double routeLength(List<LatLng> points) {
         final double METERS_TO_KM = 0.0001;
 
         if (points.isEmpty()) {
@@ -21,10 +21,14 @@ public class Utils {
             prev_point = points.get(i);
         }
 
-        return length*METERS_TO_KM;
+        return length * METERS_TO_KM;
     }
 
-    static public LatLng geoPointToLatLng(final GeoPoint gp){
+    static public LatLng geoPointToLatLng(final GeoPoint gp) {
         return new LatLng(gp.getLatitude(), gp.getLongitude());
+    }
+
+    static public String sharePath(String placeId) {
+        return "http://tourismapp.com/" + placeId;
     }
 }

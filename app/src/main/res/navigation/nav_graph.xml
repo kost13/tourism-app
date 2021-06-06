@@ -129,4 +129,5 @@
         tools:layout="@layout/fragment_place_view">
     </fragment>
     <action android:id="@+id/action_global_ProfileFragment" app:destination="@id/ProfileFragment" />
+    <action android:id="@+id/action_global_PlaceViewFragmet" app:destination="@id/PlaceViewFragmet" />
 </navigation>

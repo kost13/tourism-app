@@ -17,10 +17,13 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.kost13.tourismapp.places.PlaceViewFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private NavController navController;
+
+    static public final String PLACE_ENTRY = "place";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment navHostFragment =
                 (NavHostFragment) supportFragmentManager.findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
+
+        Intent intent = getIntent();
+        String place = intent.getStringExtra(MainActivity.PLACE_ENTRY);
+        if(place != null){
+            openPlace(place);
+        }
     }
 
     @Override
@@ -104,5 +113,11 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         Auth.verifyAuth(this);
         Auth.attachListener();
+    }
+
+    private void openPlace(String placeId){
+        Bundle bundle = new Bundle();
+        bundle.putString(PlaceViewFragment.PLACE_ID, placeId);
+        navController.navigate(R.id.action_global_PlaceViewFragmet, bundle);
     }
 }

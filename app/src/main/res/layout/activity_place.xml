@@ -18,6 +18,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/dark_primary_color"
             app:logo="@drawable/ic_iconfinder_achievement_6843078"
+            app:title="@string/app_name"
             app:popupTheme="@style/Theme.TourismApp.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
