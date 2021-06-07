@@ -105,18 +105,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Auth.detachListener();
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        Auth.detachListener();
+//    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Auth.verifyAuth(this);
-        Auth.attachListener();
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        Auth.verifyAuth(this);
+//        Auth.attachListener();
+//    }
 
     private void openPlace(String placeId){
         Bundle bundle = new Bundle();

@@ -75,7 +75,6 @@
         android:layout_marginTop="24dp"
         app:backgroundTint="@color/dark_primary_color"
         android:text="Create route"
-        android:visibility="gone"
         android:textSize="24sp"
         app:icon="@drawable/ic_navigation"
         app:iconSize="52dp"

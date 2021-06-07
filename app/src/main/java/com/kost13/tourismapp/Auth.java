@@ -65,6 +65,9 @@ public class Auth {
         if(user != null){
             callback.onDataReady();
         }
+        if(firebaseAuth == null || getCurrentUser() == null){
+            return;
+        }
         Database.getUsersDb().document(getCurrentUser()).get().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
                 Log.e("firebase", "Error getting data", task.getException());
