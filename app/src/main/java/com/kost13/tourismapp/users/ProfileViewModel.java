@@ -40,17 +40,17 @@ public class ProfileViewModel extends ViewModel {
 
     void setUser(User user){ this.user = user;}
 
-    void commitUser(OnDataReadyCallback callback){
+    void commitUser(OnDataReadyCallback callback, boolean updateImge){
 
-        Database.saveProfileImage(user.imageUri(), (String url) -> {
-            user.setProfileImageUrl(url);
-            Database.getUsersDb().document(userId).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    callback.onDataReady();
-                }
+        if(updateImge){
+            Database.saveProfileImage(user.imageUri(), (String url) -> {
+                user.setProfileImageUrl(url);
+                Database.getUsersDb().document(userId).set(user).addOnCompleteListener(task -> callback.onDataReady());
             });
-        });
+        } else {
+            Database.getUsersDb().document(userId).set(user).addOnCompleteListener(task -> callback.onDataReady());
+        }
+
     }
 
     void clear(){
@@ -60,19 +60,17 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void getUserData(OnDataReadyCallback callback) {
-        Database.getUsersDb().document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("firebase", "Error getting data", task.getException());
-                } else {
-                    user = task.getResult().toObject(User.class);
-                    if (user != null) {
-                        user.setId(userId);
-                        callback.onDataReady();
-                    }
+        Database.getUsersDb().document(userId).get().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.e("firebase", "Error getting data", task.getException());
+            } else {
+                user = task.getResult().toObject(User.class);
+                if (user != null) {
+                    user.setId(userId);
+                    callback.onDataReady();
                 }
-            }});
+            }
+        });
     }
 
     public void getUserRoutesData(OnDataReadyCallback callback) {

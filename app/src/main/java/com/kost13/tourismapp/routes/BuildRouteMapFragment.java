@@ -2,6 +2,7 @@ package com.kost13.tourismapp.routes;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,37 +47,8 @@ public class BuildRouteMapFragment extends Fragment {
 
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
-
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
         @Override
         public void onMapReady(GoogleMap googleMap) {
-
-//            Context context = getContext();
-//
-//            if (context != null && (ActivityCompat.checkSelfPermission(context,
-//                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) && (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-//
-//                // TODO: Consider calling
-//                //    ActivityCompat#requestPermissions
-//                // here to request the missing permissions, and then overriding
-//                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                //                                          int[] grantResults)
-//                // to handle the case where the user grants the permission. See the documentation
-//                // for ActivityCompat#requestPermissions for more details.
-////                return;
-//                LatLng warsaw = new LatLng(52.2297700, 21.0117800);
-//                googleMap.moveCamera(CameraUpdateFactory.newLatLng(warsaw));
-//            } else {
-//                googleMap.setMyLocationEnabled(true);
-//            }
 
             if(routeMapViewModel.getPoints().isEmpty()) {
                 LatLng warsaw = new LatLng(52.22987, 21.01199);
@@ -129,7 +101,11 @@ public class BuildRouteMapFragment extends Fragment {
         PointOfInterest poi = createNewPOI(latLng);
         routeMapViewModel.getPois().add(poi);
 
-        NavHostFragment.findNavController(BuildRouteMapFragment.this).navigate(R.id.action_BuildRouteMapFragment_to_CreateRoutePoiFragment);
+
+        Handler handler = new Handler();
+        handler.post(() -> NavHostFragment.findNavController(BuildRouteMapFragment.this).navigate(R.id.action_BuildRouteMapFragment_to_CreateRoutePoiFragment));
+
+//        NavHostFragment.findNavController(BuildRouteMapFragment.this).navigate(R.id.action_BuildRouteMapFragment_to_CreateRoutePoiFragment);
     }
 
     private PointOfInterest createNewPOI(LatLng pos){
@@ -205,6 +181,7 @@ public class BuildRouteMapFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString("preview", "true");
         NavHostFragment.findNavController(BuildRouteMapFragment.this).navigate(R.id.action_BuildRouteMapFragment_to_MapFragment, bundle);
+
     }
 
     private void onDone(View view) {
@@ -214,31 +191,4 @@ public class BuildRouteMapFragment extends Fragment {
             NavHostFragment.findNavController(BuildRouteMapFragment.this).popBackStack(R.id.FirstFragment, false);
         });
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        final List<PointOfInterest> pois = routeMapViewModel.getPois();
-//        if(!pois.isEmpty()){
-//            if(map != null){
-//                PointOfInterest last = pois.get(pois.size()-1);
-//                if(last != null){
-//                    map.addMarker(new MarkerOptions().position(last.getLatLng()).title(last.getTitle()));
-//                }
-//            } else {
-//                SupportMapFragment mapFragment =
-//                        (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-//                if (mapFragment != null) {
-//                    mapFragment.getMapAsync((GoogleMap map) -> {
-//                        callback.onMapReady(map);
-//                        for(PointOfInterest p : pois){
-//                            map.addMarker(new MarkerOptions().position(p.getLatLng()).title(p.getTitle()));
-//                        }
-//                    });
-//                }
-//            }
-//        }
-//        updateRouteLength();
-//        updatePointsOfInterestCount();
-//    }
 }

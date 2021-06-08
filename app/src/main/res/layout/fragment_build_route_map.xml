@@ -73,6 +73,7 @@
             app:backgroundTint="@color/dark_primary_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/buttonDone"
+            android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

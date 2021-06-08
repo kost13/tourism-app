@@ -114,4 +114,10 @@ public class RouteMapViewModel extends ViewModel {
 
         return new LatLngBounds(new LatLng(min_lat, min_lng), new LatLng(max_lat, max_lng));
     }
+
+    public void clear(){
+        points.clear();
+        pois.clear();
+        basicData = null;
+    }
 }

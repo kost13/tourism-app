@@ -98,6 +98,9 @@ public class ProfileFragment extends Fragment {
             return;
         }
 
+        TextView placesTV = currentView.findViewById(R.id.places);
+        placesTV.setVisibility(places.isEmpty() ? View.GONE : View.VISIBLE);
+
         for (Place place : places) {
             if(!place.getPublicVisibility() && Auth.getCurrentUser().compareTo(place.getUserId()) != 0){
                 continue;
@@ -115,16 +118,24 @@ public class ProfileFragment extends Fragment {
         }
 
         List<Route> routes = viewModel.getRoutes();
+        User user = viewModel.getUser();
 
-        if (routes == null) {
+        if (routes == null || user == null) {
+            return;
+        }
+
+        TextView routesTV = currentView.findViewById(R.id.tourRoutes);
+        routesTV.setVisibility((routes.isEmpty() || !user.getIsGuide()) ? View.GONE : View.VISIBLE);
+
+        if(!user.getIsGuide()) {
             return;
         }
 
         LinearLayout layout = currentView.findViewById(R.id.routesProfileLayout);
-
         if(layout.getChildCount() > 0){
             return;
         }
+
 
         for (Route route : routes) {
             View itemView = LayoutInflater.from(getContext()).inflate(R.layout.route_row, null, false);
@@ -238,6 +249,7 @@ public class ProfileFragment extends Fragment {
 
         ImageView editProfile = currentView.findViewById(R.id.editProfile);
         editProfile.setVisibility(editEnabled ? View.VISIBLE : View.INVISIBLE);
+        editProfile.setOnClickListener(this::editProfile);
 
         TextView nameView = currentView.findViewById(R.id.nameTextView);
         nameView.setText(user.getName());
@@ -245,33 +257,63 @@ public class ProfileFragment extends Fragment {
         TextView bioView = currentView.findViewById(R.id.profileBio);
         bioView.setText(user.getBio());
 
-//        TextView languages = currentView.findViewById(R.id.languagesTextView);
-//        languages.setText(String.join(", ", user.getLanguages()));
-
         TextView locations = currentView.findViewById(R.id.locationsTextView);
         locations.setText(user.getLocation());
 
-        TextView phone = currentView.findViewById(R.id.phoneValue);
-        phone.setText(user.getTelephone());
-        phone.setOnClickListener(this::phoneClicked);
-
-        TextView email = currentView.findViewById(R.id.emailValue);
-        email.setText(user.getEmail());
-        email.setOnClickListener(this::emailClicked);
-
-        TextView webpage = currentView.findViewById(R.id.webpageValue);
-        webpage.setText(user.getWebpage());
-        webpage.setOnClickListener(this::webpageClicked);
+        setupPhone(user);
+        setupEmail(user);
+        setupWebpage(user);
 
         showProfileImage(user.getProfileImageUrl());
-
-        ImageButton editButton = currentView.findViewById(R.id.editProfile);
-        editButton.setOnClickListener(this::editProfile);
 
         TextView guideTV = currentView.findViewById(R.id.textViewGuide);
         guideTV.setVisibility(user.getIsGuide() ? View.VISIBLE : View.INVISIBLE);
     }
 
+    void setupPhone(User user){
+        TextView phone = currentView.findViewById(R.id.phoneValue);
+        TextView label = currentView.findViewById(R.id.phoneLabel);
+        String telephone =user.getTelephone();
+        if(telephone == null || telephone.isEmpty()){
+            phone.setVisibility(View.GONE);
+            label.setVisibility(View.GONE);
+        } else {
+            phone.setVisibility(View.VISIBLE);
+            label.setVisibility(View.VISIBLE);
+            phone.setText(telephone);
+            phone.setOnClickListener(this::phoneClicked);
+        }
+    }
+
+    void setupEmail(User user){
+        TextView email = currentView.findViewById(R.id.emailValue);
+        TextView label = currentView.findViewById(R.id.emailLabel);
+        String emailVal = user.getEmail();
+        if(emailVal == null || emailVal.isEmpty()){
+            email.setVisibility(View.GONE);
+            label.setVisibility(View.GONE);
+        } else {
+            email.setVisibility(View.VISIBLE);
+            label.setVisibility(View.VISIBLE);
+            email.setText(emailVal);
+            email.setOnClickListener(this::emailClicked);
+        }
+    }
+
+    void setupWebpage(User user){
+        TextView webpage = currentView.findViewById(R.id.webpageValue);
+        TextView label = currentView.findViewById(R.id.webpageLabel);
+        String page  = user.getWebpage();
+        if(page == null || page.isEmpty()){
+            webpage.setVisibility(View.GONE);
+            label.setVisibility(View.GONE);
+        } else {
+            webpage.setVisibility(View.VISIBLE);
+            label.setVisibility(View.VISIBLE);
+            webpage.setText(page);
+            webpage.setOnClickListener(this::webpageClicked);
+        }
+    }
 
     public void phoneClicked(View view) {
         String phone_number = viewModel.getUser().getTelephone();

@@ -48,7 +48,7 @@
         </activity>
         <activity
             android:name=".places.PlaceActivity"
-            android:label="@string/title_activity_place"
+            android:label="@string/app_name"
             android:theme="@style/Theme.TourismApp.NoActionBar"
             android:icon="@drawable/ic_iconfinder_achievement_6843078">
             <intent-filter>

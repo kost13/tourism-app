@@ -32,6 +32,7 @@ public class ProfileEditFragment extends Fragment {
     private Uri image;
     private ProfileViewModel viewModel;
     private View currentView;
+    private boolean pictureChanged = false;
 
     public ProfileEditFragment() {
         // Required empty public constructor
@@ -53,6 +54,7 @@ public class ProfileEditFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        pictureChanged = false;
         currentView = view;
         User user = viewModel.getUser();
         if (user != null) {
@@ -64,12 +66,14 @@ public class ProfileEditFragment extends Fragment {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/jpeg");
             intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+            pictureChanged = true;
             startActivityForResult(intent.createChooser(intent, "Insert Picture"), PICTURE_RESULTS);
         });
 
         Button clear = view.findViewById(R.id.clearButton);
         clear.setOnClickListener(view1 -> {
             image = null;
+            pictureChanged = true;
             updateImage();
         });
 
@@ -130,7 +134,9 @@ public class ProfileEditFragment extends Fragment {
         SwitchMaterial guideSwitch = currentView.findViewById(R.id.switchGuide);
         user.setIsGuide(guideSwitch.isChecked());
 
-        user.setImage(image);
+        if(pictureChanged){
+            user.setImage(image);
+        }
     }
 
     private void saveData(View view){
@@ -139,10 +145,11 @@ public class ProfileEditFragment extends Fragment {
         saveDataFromFileds(user);
 
         viewModel.setUser(user);
+        Toast.makeText(getContext(), "Updating profile", Toast.LENGTH_SHORT).show();
         viewModel.commitUser(() -> {
             Toast.makeText(getContext(), "Profile updated", Toast.LENGTH_LONG).show();
             close(view);
-        });
+        }, pictureChanged);
     }
 
     private void close(View view){
