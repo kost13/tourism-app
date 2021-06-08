@@ -32,6 +32,7 @@ public class Database {
     private static FirebaseFirestore firestore;
     private static StorageReference storage;
 
+
     private static DatabaseReference openDatabaseReference(String reference) {
         if (firebaseDatabase == null) {
             firebaseDatabase = FirebaseDatabase.getInstance();
@@ -106,5 +107,6 @@ public class Database {
             }
         });
     }
+
 
 }

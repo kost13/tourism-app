@@ -99,6 +99,9 @@ public class ProfileFragment extends Fragment {
         }
 
         for (Place place : places) {
+            if(!place.getPublicVisibility() && Auth.getCurrentUser().compareTo(place.getUserId()) != 0){
+                continue;
+            }
             View itemView = LayoutInflater.from(getContext()).inflate(R.layout.route_row, null, false);
             setupPlaceView(itemView, place);
             layout.addView(itemView);

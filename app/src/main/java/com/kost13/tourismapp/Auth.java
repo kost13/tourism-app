@@ -32,7 +32,7 @@ public class Auth {
         caller.startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
+                        .setAvailableProviders(providers).setLogo(R.drawable.ic_iconfinder_achievement_6843078).setTheme(R.style.Theme_TourismApp)
                         .build(),
                 RC_SIGN_IN);
     }
@@ -89,4 +89,18 @@ public class Auth {
     public static void detachListener() {
         firebaseAuth.removeAuthStateListener(firebaseAuthListener);
     }
+
+    public static void commitNewUser(String email, String name){
+        User newUser = new User();
+        newUser.setName(name);
+        newUser.setEmail(email);
+        Database.getUsersDb().document(getCurrentUser()).get().addOnCompleteListener(
+                task -> {
+                    if(!task.getResult().exists()){
+                        Database.getUsersDb().document(getCurrentUser()).set(newUser);
+                    }
+                }
+        );
+    }
+
 }

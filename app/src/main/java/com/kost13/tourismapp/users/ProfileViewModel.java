@@ -56,6 +56,7 @@ public class ProfileViewModel extends ViewModel {
     void clear(){
         userId = null;
         routes.clear();
+        places.clear();
     }
 
     public void getUserData(OnDataReadyCallback callback) {

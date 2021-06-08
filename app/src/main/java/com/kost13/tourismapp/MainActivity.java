@@ -2,6 +2,7 @@ package com.kost13.tourismapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -98,6 +99,13 @@ public class MainActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
                 Log.d("signIn", "Successfully logging in");
+                Bundle bundle = data.getExtras();
+                if(bundle != null){
+                    Auth.commitNewUser(bundle.getString("mEmail"), bundle.getString("mName"));
+                    for(String key : bundle.keySet()){
+                        Log.e("MainActivityIntent", key + " : " + (bundle.get(key) != null ? bundle.get(key) : "NULL"));
+                    }
+                }
             } else {
                 Log.d("signIn", "Error when logging in");
                 Toast.makeText(this, "Error when logging in.", Toast.LENGTH_LONG);

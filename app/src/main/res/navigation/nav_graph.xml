@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/FirstFragment"
         android:name="com.kost13.tourismapp.FirstFragment"
-        android:label="@string/first_fragment_label"
+        android:label="FirstFragment"
         tools:layout="@layout/fragment_main">
 
         <action
@@ -34,7 +34,7 @@
     <fragment
         android:id="@+id/SearchGuidesFragment"
         android:name="com.kost13.tourismapp.users.SearchGuidesFragment"
-        android:label="@string/second_fragment_label"
+        android:label="SearchGuidesFragment"
         tools:layout="@layout/fragment_search_guides">
 
         <action

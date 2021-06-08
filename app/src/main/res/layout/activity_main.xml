@@ -17,7 +17,6 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/dark_primary_color"
             android:longClickable="false"
-            app:logo="@drawable/ic_iconfinder_achievement_6843078"
             app:popupTheme="@style/Theme.TourismApp.PopupOverlay">
 
         </androidx.appcompat.widget.Toolbar>
